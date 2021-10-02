@@ -66,7 +66,7 @@ Shader "Custom/UnlitShadows"
             // 6.) The LIGHT_ATTENUATION samples the shadowmap (using the coordinates calculated by TRANSFER_VERTEX_TO_FRAGMENT
             // and stored in the structure defined by LIGHTING_COORDS), and returns the value as a float.
             float attenuation = LIGHT_ATTENUATION(i);
-            attenuation = lerp(1, step(0.5, attenuation), ShadowStrength);
+            attenuation = lerp(1, step(0.75, attenuation), ShadowStrength);
 
             float4 texColor = tex2D(_MainTex, i.texcoord);
 
