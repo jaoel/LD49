@@ -16,6 +16,9 @@ namespace LD49 {
         private Rigidbody spineRigidbody = null;
 
         [SerializeField]
+        private ParticleSystem farticleSystem = null;
+
+        [SerializeField]
         private float acceleration = 0.0f;
 
         [SerializeField]
@@ -70,7 +73,11 @@ namespace LD49 {
                 ToggleRagdoll();
             }
             //Quaternion.Euler(Random.Range(0.0f, 90.0f), Random.Range(-45.0f, 45.0f), 0.0f)
-            spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) * (transform.forward + Vector3.up) * Random.Range(minFartForce, maxFartForce), ForceMode.Impulse);
+
+            Vector3 force = Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) * (transform.forward + Vector3.up) * Random.Range(minFartForce, maxFartForce);
+            farticleSystem.transform.rotation = Quaternion.FromToRotation(Vector3.forward, -force);
+            farticleSystem.Play();
+            spineRigidbody.AddForce(force, ForceMode.Impulse);
         }
 
         private void ToggleRagdoll() {
