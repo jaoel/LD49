@@ -227,6 +227,14 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 80
       objectReference: {fileID: 0}
+    - target: {fileID: 307623650396594117, guid: f0212e66bb1390d45a293058262196f0, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 307623650396594117, guid: f0212e66bb1390d45a293058262196f0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1028003360935783837, guid: f0212e66bb1390d45a293058262196f0, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -353,13 +361,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.20796824, y: -0, z: -0, w: 0.97813565}
-  m_LocalPosition: {x: -0.02, y: 10.02, z: -17.21}
+  m_LocalRotation: {x: -0, y: 0.2283394, z: -0, w: 0.9735816}
+  m_LocalPosition: {x: -4.2, y: 3.03, z: -11.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 24.007, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 26.399, z: 0}
 --- !u!1 &1642213005
 GameObject:
   m_ObjectHideFlags: 0

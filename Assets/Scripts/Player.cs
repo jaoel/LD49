@@ -9,10 +9,7 @@ namespace LD49 {
         private Animator animator = null;
 
         [SerializeField]
-        private Rigidbody rigidbody = null;
-
-        [SerializeField]
-        private CharacterController characterController;
+        private new Rigidbody rigidbody = null;
 
         [SerializeField]
         private float acceleration = 0.0f;
@@ -32,22 +29,24 @@ namespace LD49 {
         }
 
         private void Movement() {
+            Vector3 forwardDir = Vector3.zero;
+            Vector3 rightDir = Vector3.zero;
             int dirX = 0;
             int dirZ = 0;
 
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
-                dirZ = 1;
+                forwardDir = Camera.main.transform.forward;
             } else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
-                dirZ = -1;
+                forwardDir = -Camera.main.transform.forward;
             }
 
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-                dirX = 1;
+                rightDir = Camera.main.transform.right;
             } else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-                dirX = -1;
+                rightDir = -Camera.main.transform.right;
             }
 
-            Vector3 direction = new Vector3(dirX, 0.0f, dirZ);
+            Vector3 direction = (new Vector3(forwardDir.x, 0.0f, forwardDir.z) + new Vector3(rightDir.x, 0.0f, rightDir.z)).normalized;// new Vector3(dirX, 0.0f, dirZ);
             if (direction.magnitude > 0.0f) {
                 currentVelocity += acceleration * Time.deltaTime;
                 currentVelocity = Mathf.Min(maxMovementVelocity, currentVelocity);
@@ -60,10 +59,9 @@ namespace LD49 {
                 transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 4.0f * Time.deltaTime, 0.0f).normalized;
                 Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.1f * Time.deltaTime, 0.0f).normalized;
                 rigidbody.velocity = Vector3.Scale(movementDir, new Vector3(currentVelocity, 0.0f, currentVelocity));
-                //characterController.Move(Vector3.Scale(movementDir, new Vector3(currentVelocity, 0.0f, currentVelocity) * Time.deltaTime));
 
                 if (animator != null) {
-                    animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime));
+                    animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime * 0.1f));
                 }
             }
             else {
