@@ -86,7 +86,7 @@ namespace LD49 {
 
                 collider.transform.position = spineRigidbody.position;
             }
-            
+
 
             foreach (Rigidbody rb in armature.GetComponentsInChildren<Rigidbody>()) {
                 rb.isKinematic = !rb.isKinematic;
@@ -130,10 +130,11 @@ namespace LD49 {
                 currentVelocity = Mathf.Max(currentVelocity, 0.0f);
             }
 
+            Debug.Log(direction);
             if (currentVelocity > 0.0f) {
                 transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 4.0f * Time.deltaTime, 0.0f).normalized;
-                //Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
-                rigidbody.velocity = Vector3.Scale(transform.forward, new Vector3(currentVelocity, 0.0f, currentVelocity));
+                Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
+                rigidbody.velocity = Vector3.Scale(movementDir, new Vector3(currentVelocity, 0.0f, currentVelocity));
 
                 if (animator != null) {
                     animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime * 0.1f));
@@ -145,14 +146,20 @@ namespace LD49 {
 
         private void OnCollisionEnter(Collision collision) {
             if (LayerMask.LayerToName(collision.collider.gameObject.layer) == "Props") {
-                if (currentVelocity >= maxMovementVelocity * 0.5f) {
+                if (currentVelocity >= maxMovementVelocity * 0.75f) {
                     if (!rigidbody.isKinematic) {
                         ToggleRagdoll();
                     }
 
-                    spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) 
+                    spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
                 }
+            }
+        }
+
+        private void OnCollisionStay(Collision collision) {
+            if (LayerMask.LayerToName(collision.collider.gameObject.layer) == "Props") {
+                currentVelocity = Mathf.Min(currentVelocity, maxMovementVelocity * 0.5f);
             }
         }
     }
