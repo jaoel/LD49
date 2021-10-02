@@ -24,15 +24,12 @@ namespace LD49 {
         }
 
         private void Update() {
-            //CarMovement();
             Movement();
         }
 
         private void Movement() {
             Vector3 forwardDir = Vector3.zero;
             Vector3 rightDir = Vector3.zero;
-            int dirX = 0;
-            int dirZ = 0;
 
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
                 forwardDir = Camera.main.transform.forward;
@@ -68,72 +65,6 @@ namespace LD49 {
                 animator.SetFloat("RunSpeed", 0.0f);
             }
         }
-
-        /*
-        private void CarMovement() {
-            if (characterController != null) {
-                int movementDirection = 0;
-                int rotationDirection = 0;
-
-                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-                    rotationDirection = 1;
-                } else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-                    rotationDirection = -1;
-                }
-
-                if (rotationDirection != 0) {
-                    rotationVelocity += rotationAcceleration * Time.deltaTime * rotationDirection;
-                    rotationVelocity = Mathf.Clamp(rotationVelocity, -maxRotationVelocity, maxRotationVelocity);
-                    oldRotation = rotationDirection;
-                } else if (rotationVelocity != 0.0f) {
-                    rotationVelocity -= rotationAcceleration * Time.deltaTime * oldRotation;
-
-                    if (oldRotation == -1) {
-                        rotationVelocity = Mathf.Min(rotationVelocity, 0.0f);
-                    } else if (oldRotation == 1) {
-                        rotationVelocity = Mathf.Max(rotationVelocity, 0.0f);
-                    }
-
-                    if (rotationVelocity == 0.0f) {
-                        oldRotation = 0;
-                    }
-                }
-
-                if (rotationVelocity != 0.0f) {
-                    transform.forward = (Quaternion.Euler(0.0f, rotationVelocity, 0.0f) * transform.forward).normalized;
-                }
-
-
-                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
-                    movementDirection = 1;
-                } else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
-                    movementDirection = -1;
-                }
-
-                if (movementDirection != 0) {
-                    currentVelocity += acceleration * Time.deltaTime * movementDirection;
-                    currentVelocity = Mathf.Clamp(currentVelocity, -maxMovementVelocity, maxMovementVelocity);
-
-                    oldMovement = movementDirection;
-                } else if (currentVelocity != 0.0f) {
-                    currentVelocity -= acceleration * Time.deltaTime * oldMovement;
-
-                    if (oldMovement == -1) {
-                        currentVelocity = Mathf.Min(currentVelocity, 0.0f);
-                    } else if (oldMovement == 1) {
-                        currentVelocity = Mathf.Max(currentVelocity, 0.0f);
-                    }
-
-                    if (currentVelocity == 0.0f) {
-                        oldMovement = 0;
-                    }
-                }
-
-                Vector3 velocity = new Vector3(currentVelocity, 0.0f, currentVelocity);
-                characterController.Move(Vector3.Scale(transform.forward.normalized, velocity * Time.deltaTime));
-            }
-        }
-        */
     }
 }
 
