@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
@@ -27,6 +28,14 @@ namespace LD49 {
 
         private void Start() {
             DontDestroyOnLoad(gameObject);
+        }
+
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                if (SceneManager.GetActiveScene().name != "Bootstrap") {
+                    SceneManager.LoadScene("Bootstrap");
+                }
+            }
         }
     }
 }
