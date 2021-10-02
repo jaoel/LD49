@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 3467150191826417401}
   - component: {fileID: 3467150191826417400}
   m_Layer: 0
-  m_Name: Template Level
+  m_Name: _Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
