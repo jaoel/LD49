@@ -15,6 +15,10 @@ namespace LD49 {
         private Level currentLevel = null;
         private int currentLevelIndex = -1;
 
+        private void Start() {
+            GameManager.MusicManager.PlayGameMusic();
+        }
+
         private void Update() {
             if (requestedLevel != -1 && requestedLevel != currentLevelIndex) {
                 LoadLevel(requestedLevel);

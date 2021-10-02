@@ -17,6 +17,11 @@ namespace LD49 {
             }
         }
 
+        public static MusicManager MusicManager => Instance.musicManager;
+
+        [SerializeField]
+        private MusicManager musicManager;
+
         private void Awake() {
             if (_instance == null) {
                 _instance = this;
