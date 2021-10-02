@@ -79,17 +79,19 @@ namespace LD49 {
             collider.enabled = !collider.enabled;
 
             int i = 0;
-            foreach(Transform t in armature.GetComponentsInChildren<Transform>()) {
+            foreach (Transform t in armature.GetComponentsInChildren<Transform>()) {
                 t.localRotation = boneRotations[i++];
             }
 
-            foreach(Rigidbody rb in armature.GetComponentsInChildren<Rigidbody>()) {
+            foreach (Rigidbody rb in armature.GetComponentsInChildren<Rigidbody>()) {
                 rb.isKinematic = !rb.isKinematic;
             }
 
             foreach (Collider c in armature.GetComponentsInChildren<Collider>()) {
                 c.enabled = !c.enabled;
             }
+
+            currentVelocity = 0.0f;
         }
 
         private void Movement() {
@@ -130,9 +132,21 @@ namespace LD49 {
                 if (animator != null) {
                     animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime * 0.1f));
                 }
-            }
-            else {
+            } else {
                 animator.SetFloat("RunSpeed", 0.0f);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision) {
+            if (LayerMask.LayerToName(collision.collider.gameObject.layer) == "Props") {
+                if (rigidbody.velocity.magnitude >= maxMovementVelocity * 0.75f) {
+                    if (!rigidbody.isKinematic) {
+                        ToggleRagdoll();
+                    }
+
+                    spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) 
+                        * (-transform.forward + Vector3.up) * Random.Range(minFartForce, maxFartForce), ForceMode.Impulse);
+                }
             }
         }
     }
