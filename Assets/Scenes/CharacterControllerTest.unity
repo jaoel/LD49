@@ -419,10 +419,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 635029402262123490, guid: f0212e66bb1390d45a293058262196f0, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1028003360935783837, guid: f0212e66bb1390d45a293058262196f0, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -471,14 +467,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4715438710763567230, guid: f0212e66bb1390d45a293058262196f0, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.13404693
-      objectReference: {fileID: 0}
-    - target: {fileID: 4715438710763567230, guid: f0212e66bb1390d45a293058262196f0, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: 0.033050496
-      objectReference: {fileID: 0}
     - target: {fileID: 5810139456790868654, guid: f0212e66bb1390d45a293058262196f0, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: -0.000000007450583
@@ -491,16 +479,7 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: 0.05539829
       objectReference: {fileID: 0}
-    - target: {fileID: 7135259522789943002, guid: f0212e66bb1390d45a293058262196f0, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.13193356
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135259522789943002, guid: f0212e66bb1390d45a293058262196f0, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: 0.03325696
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9190779001547004452, guid: f0212e66bb1390d45a293058262196f0, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0212e66bb1390d45a293058262196f0, type: 3}
 --- !u!1 &1642213005
 GameObject:

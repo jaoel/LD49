@@ -429,7 +429,6 @@ GameObject:
   - component: {fileID: 5036376318283322387}
   - component: {fileID: 635029402262123490}
   - component: {fileID: 7575307825784876679}
-  - component: {fileID: 9190779001547004452}
   m_Layer: 7
   m_Name: Wrapper
   m_TagString: Untagged
@@ -459,7 +458,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4072496648080426201}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.25
   m_Height: 1.8
@@ -478,22 +477,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdollPushBody: {fileID: 33828301153709487}
---- !u!54 &9190779001547004452
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4072496648080426201}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!54 &8770688935365019019
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1036,6 +1019,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1f3f986fd58c684799cab8e6147d46e, type: 3}
+--- !u!1 &5416962273406803775 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f1f3f986fd58c684799cab8e6147d46e, type: 3}
+  m_PrefabInstance: {fileID: 5182943525764325998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4556509768327851685 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8707281976439114955, guid: f1f3f986fd58c684799cab8e6147d46e, type: 3}
@@ -1104,10 +1092,5 @@ GameObject:
 --- !u!4 &4640742607644427653 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1f3f986fd58c684799cab8e6147d46e, type: 3}
-  m_PrefabInstance: {fileID: 5182943525764325998}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5416962273406803775 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f1f3f986fd58c684799cab8e6147d46e, type: 3}
   m_PrefabInstance: {fileID: 5182943525764325998}
   m_PrefabAsset: {fileID: 0}
