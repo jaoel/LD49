@@ -4,6 +4,14 @@ using UnityEngine.SceneManagement;
 namespace LD49 {
     public class MainMenuManager : MonoBehaviour {
 
+        public GameObject mainObject;
+        public GameObject levelSelectObject;
+
+        private void Awake() {
+            mainObject.SetActive(true);
+            levelSelectObject.SetActive(false);
+        }
+
         private void Start() {
             GameManager.MusicManager.PlayMainMenuMusic();
         }
@@ -14,7 +22,13 @@ namespace LD49 {
         }
 
         public void LevelSelect() {
+            mainObject.SetActive(false);
+            levelSelectObject.SetActive(true);
+        }
 
+        public void BackFromLevelSelect() {
+            mainObject.SetActive(true);
+            levelSelectObject.SetActive(false);
         }
 
         private void Update() {

@@ -9,6 +9,11 @@ namespace LD49 {
         private bool over = false;
         private float jumpAnim = 1f;
 
+        private void OnDisable() {
+            over = false;
+            jumpAnim = 1f;
+        }
+
         private void OnMouseOver() {
             if (!over) {
                 jumpAnim = 0f;
