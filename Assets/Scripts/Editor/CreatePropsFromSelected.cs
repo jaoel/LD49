@@ -27,6 +27,7 @@ namespace LD49.Editor {
             copy.name = toCopy.name;
             copy.transform.position = Vector3.zero;
             copy.transform.rotation = Quaternion.identity;
+            copy.layer = LayerMask.NameToLayer("Props");
 
             Rigidbody rigidbody = copy.AddComponent<Rigidbody>();
             MeshCollider meshCollider = copy.AddComponent<MeshCollider>();
