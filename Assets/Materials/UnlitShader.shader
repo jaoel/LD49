@@ -47,7 +47,7 @@ Shader "Custom/UnlitShadows"
         float4 _MainTex_ST;
         float4 _Color;
         
-        static const float ShadowStrength = 0.25;
+        static const float ShadowStrength = 0.1;
 
         v2f vert(appdata_base v) {
             v2f o;
