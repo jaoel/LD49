@@ -133,8 +133,8 @@ namespace LD49 {
         }
 
         private void ResetPlayer() {
-            if (rigidbody.isKinematic && spineRigidbody.velocity.magnitude >= 1.0f && deadTimer == 0.0f) {
-                deadTimer = Time.time + 3.0f;
+            if (rigidbody.isKinematic && spineRigidbody.velocity.magnitude > 0.1f) {
+                deadTimer = Time.time + 1.0f;
             }
 
             if (deadTimer > 0.0f && deadTimer - Time.time < 0.0f) {
@@ -207,6 +207,7 @@ namespace LD49 {
                     t.localRotation = boneRotations[i++];
                 }
 
+                //spineRigidbody.position = new Vector3(spineRigidbody.position.x, 0.0f, spineRigidbody.position.z);
                 collider.transform.position = spineRigidbody.position;
             }
 
@@ -256,7 +257,7 @@ namespace LD49 {
             if (currentVelocity > 0.0f) {
                 transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 4.0f * Time.deltaTime, 0.0f).normalized;
                 Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
-                rigidbody.velocity = Vector3.Scale(movementDir, new Vector3(currentVelocity, 0.0f, currentVelocity));
+                rigidbody.velocity = Vector3.Scale(movementDir, new Vector3(currentVelocity,  -Physics.gravity.y, currentVelocity));
 
                 if (animator != null) {
                     animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime * 0.1f));
