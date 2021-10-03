@@ -54,6 +54,7 @@ namespace LD49 {
 
         private float fartTimer = 0.0f;
         private float clenchTimer = 0.0f;
+        private float deadTimer = 0.0f;
 
         private void Awake() {
             boneRotations = armature.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
@@ -81,20 +82,36 @@ namespace LD49 {
             if (Input.GetKeyDown(KeyCode.Backspace)) {
                 ToggleRagdoll();
             }
-
+            bool farted = false;
             if (fartTimer > 0) {
 
                 if (fartTimer - Time.time < 2.0f) {
                     fartWarning.SetActive(true);
                 }
 
-
                 if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
                     Fart();
+                    farted = true;
                 }
             }
 
             Clench();
+
+            if (!farted) {
+                ResetPlayer();
+            }
+        }
+
+        private void ResetPlayer() {
+            if (rigidbody.isKinematic && spineRigidbody.velocity.magnitude <= 0.0f && deadTimer == 0.0f) {
+                deadTimer = Time.time + 3.0f;
+            }
+
+            if (deadTimer > 0.0f && deadTimer - Time.time < 0.0f) {
+                deadTimer = 0.0f;
+                ToggleRagdoll();
+                SetFartTimer();
+            }
         }
 
         private void Clench() {
@@ -134,7 +151,9 @@ namespace LD49 {
             farticleSystem.Play();
             spineRigidbody.AddForce(force, ForceMode.Impulse);
 
-            SetFartTimer();
+            fartWarning.SetActive(false);
+            fartTimer = 0.0f;
+            //SetFartTimer();
         }
 
         private void ToggleRagdoll() {
@@ -194,7 +213,6 @@ namespace LD49 {
                 currentVelocity = Mathf.Max(currentVelocity, 0.0f);
             }
 
-            Debug.Log(direction);
             if (currentVelocity > 0.0f) {
                 transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 4.0f * Time.deltaTime, 0.0f).normalized;
                 Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
@@ -217,6 +235,9 @@ namespace LD49 {
 
                     spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
+
+                    fartWarning.SetActive(false);
+                    fartTimer = 0.0f;
                 }
             }
         }
