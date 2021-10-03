@@ -98,13 +98,23 @@ namespace LD49 {
         }
 
         private void Clench() {
-            if (Input.GetKey(KeyCode.Space)) {
+            if (Input.GetKey(KeyCode.Space) && !rigidbody.isKinematic) {
+                if (clenchTimer == 0.0f) {
+                    UIManager.Instance.ToggleClenchBar(true);
+                }
+
                 clenchTimer += Time.deltaTime;
+                UIManager.Instance.UpdateClenchBar(Mathf.Clamp01(clenchTimer / maxClenchTimer));
             }
 
-            if (clenchTimer > 0.0f && Input.GetKeyUp(KeyCode.Space) && fartWarning.activeSelf) {
+            if (clenchTimer > 0.0f && Input.GetKeyUp(KeyCode.Space)) {
                 clenchTimer = 0.0f;
-                Fart();
+            
+                if (fartWarning.activeSelf) {
+                    Fart();
+                }
+
+                UIManager.Instance.ToggleClenchBar(false);
             }
         }
 

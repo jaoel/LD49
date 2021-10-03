@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
+
         private static GameManager _instance;
         public static GameManager Instance {
             get {
@@ -41,6 +43,10 @@ namespace LD49 {
                     SceneManager.LoadScene("Bootstrap");
                 }
             }
+        }
+
+        public void UpdateClenchBar(float clenchValue) {
+
         }
     }
 }
