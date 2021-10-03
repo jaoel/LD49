@@ -5,6 +5,11 @@ using UnityEngine.UI;
 namespace LD49 {
     public class GameManager : MonoBehaviour {
 
+        private int chaosScore = 0;
+
+        [SerializeField]
+        private int maxChaos = 100;
+
         private static GameManager _instance;
         public static GameManager Instance {
             get {
@@ -41,8 +46,10 @@ namespace LD49 {
             }
         }
 
-        public void UpdateClenchBar(float clenchValue) {
+        public void UpdateChaos(int score) {
+            chaosScore += score;
 
+            UIManager.Instance.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));
         }
     }
 }

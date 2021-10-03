@@ -15,6 +15,8 @@ namespace LD49 {
         [SerializeField]
         private Image chaosBar = null;
 
+        [SerializeField]
+        private Gradient chaosGradient = null;
 
         private static UIManager _instance;
         public static UIManager Instance {
@@ -58,7 +60,8 @@ namespace LD49 {
         }
 
         public void UpdateChaos(float chaosValue) {
-
+            chaosBar.transform.localScale = new Vector3(chaosValue, 1.0f, 1.0f);
+            chaosBar.color = chaosGradient.Evaluate(chaosValue);
         }
     }
 }
