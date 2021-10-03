@@ -3,16 +3,25 @@ using UnityEditor;
 
 namespace LD49.Editor {
     public class CreatePropsFromSelected {
-        [MenuItem("Tools/Make Props")]
-        static void DoSomething() {
+        [MenuItem("Tools/Make Props (Replace Existing)")]
+        static void MakePropsReplace() {
             foreach (GameObject selected in Selection.gameObjects) {
                 if (Selection.activeObject is GameObject gameObject) {
-                    CreateOrReplacePrefab(selected);
+                    CreateOrReplacePrefab(selected, true);
+                }
+            }
+        }
+
+        [MenuItem("Tools/Make Props")]
+        static void MakeProps() {
+            foreach (GameObject selected in Selection.gameObjects) {
+                if (Selection.activeObject is GameObject gameObject) {
+                    CreateOrReplacePrefab(selected, false);
                 }
             } 
         }
 
-        private static void CreateOrReplacePrefab(GameObject toCopy) {
+        private static void CreateOrReplacePrefab(GameObject toCopy, bool replace) {
             Material defaultMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/UnlitPalette.mat");
             GameObject copy = GameObject.Instantiate(toCopy);
             copy.name = toCopy.name;
@@ -28,11 +37,16 @@ namespace LD49.Editor {
                 renderer.sharedMaterial = defaultMaterial;
             }
 
-            PrefabUtility.SaveAsPrefabAssetAndConnect(copy, GetPath(copy), InteractionMode.UserAction, out bool success);
-            if (!success) {
-                Debug.LogError($"Could not create prefab for game object {copy.name}");
-                return;
+            if (!replace && AssetDatabase.LoadAssetAtPath<GameObject>(GetPath(copy)) != null) {
+                Debug.Log($"Skipping {copy.name} as it already exists.");
+            } else {
+                PrefabUtility.SaveAsPrefabAssetAndConnect(copy, GetPath(copy), InteractionMode.UserAction, out bool success);
+                if (!success) {
+                    Debug.LogError($"Could not create prefab for game object {copy.name}");
+                }
             }
+
+            GameObject.DestroyImmediate(copy);
         }
 
         private static string GetPath(GameObject copy) {
