@@ -18,6 +18,12 @@ namespace LD49 {
         [SerializeField]
         private Gradient chaosGradient = null;
 
+        [SerializeField]
+        private TMPro.TextMeshProUGUI objectiveText = null;
+
+        [SerializeField]
+        private CanvasGroup objectiveGroup = null;
+
         private static UIManager _instance;
         public static UIManager Instance {
             get {
@@ -62,6 +68,15 @@ namespace LD49 {
         public void UpdateChaos(float chaosValue) {
             chaosBar.transform.localScale = new Vector3(chaosValue, 1.0f, 1.0f);
             chaosBar.color = chaosGradient.Evaluate(chaosValue);
+        }
+
+        public void ShowObjective(string text) {
+            objectiveText.text = text;
+
+            Sequence objSequence = DOTween.Sequence();
+            objSequence.Append(objectiveGroup.DOFade(2.0f, 1.0f));
+            objSequence.AppendInterval(1.0f);
+            objSequence.Append(objectiveGroup.DOFade(0.0f, 2.0f));
         }
     }
 }

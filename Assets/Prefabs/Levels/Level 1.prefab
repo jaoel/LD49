@@ -471,7 +471,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {fileID: 3467150192305682579}
-  endTrigger: {fileID: 3467150191348940619}
+  playerTriggers:
+  - {fileID: 3467150191348940619}
+  objectiveText:
+  - Get to the bathroom!
 --- !u!1 &3467150192055289388
 GameObject:
   m_ObjectHideFlags: 0
