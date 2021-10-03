@@ -13,6 +13,10 @@ namespace LD49 {
             SceneManager.LoadScene("MainScene");
         }
 
+        public void LevelSelect() {
+
+        }
+
         private void Update() {
             if (Input.GetMouseButtonDown(0)) {
                 Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
