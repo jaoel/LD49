@@ -7,6 +7,9 @@ namespace LD49 {
     public class Player : MonoBehaviour {
 
         [SerializeField]
+        private GameObject fartWarning = null;
+
+        [SerializeField]
         private Animator animator = null;
 
         [SerializeField]
@@ -40,6 +43,18 @@ namespace LD49 {
         [SerializeField]
         private float maxFartForce = 0.0f;
 
+        [SerializeField]
+        private float minFartTimer = 0.0f;
+
+        [SerializeField]
+        private float maxFartTimer = 0.0f;
+
+        [SerializeField]
+        private float maxClenchTimer = 0.0f;
+
+        private float fartTimer = 0.0f;
+        private float clenchTimer = 0.0f;
+
         private void Awake() {
             boneRotations = armature.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
             foreach (Rigidbody rb in armature.GetComponentsInChildren<Rigidbody>()) {
@@ -52,7 +67,7 @@ namespace LD49 {
         }
 
         private void Start() {
-
+            SetFartTimer();
         }
 
         private void Update() {
@@ -66,6 +81,36 @@ namespace LD49 {
             if (Input.GetKeyDown(KeyCode.Backspace)) {
                 ToggleRagdoll();
             }
+
+            if (fartTimer > 0) {
+
+                if (fartTimer - Time.time < 2.0f) {
+                    fartWarning.SetActive(true);
+                }
+
+
+                if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
+                    Fart();
+                }
+            }
+
+            Clench();
+        }
+
+        private void Clench() {
+            if (Input.GetKey(KeyCode.Space)) {
+                clenchTimer += Time.deltaTime;
+            }
+
+            if (clenchTimer > 0.0f && Input.GetKeyUp(KeyCode.Space) && fartWarning.activeSelf) {
+                clenchTimer = 0.0f;
+                Fart();
+            }
+        }
+
+        private void SetFartTimer() {
+            fartTimer = Time.time + Random.Range(minFartTimer, maxFartTimer);
+            fartWarning.SetActive(false);
         }
 
         private void Fart() {
@@ -78,6 +123,8 @@ namespace LD49 {
             farticleSystem.transform.rotation = Quaternion.FromToRotation(Vector3.forward, -force);
             farticleSystem.Play();
             spineRigidbody.AddForce(force, ForceMode.Impulse);
+
+            SetFartTimer();
         }
 
         private void ToggleRagdoll() {
