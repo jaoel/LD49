@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3824620827528236998}
   - component: {fileID: 1695261019315239179}
   - component: {fileID: 7107349339704446140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ChairBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}

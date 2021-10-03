@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5227209237238577821}
   - component: {fileID: 9032311577995370985}
   - component: {fileID: 9017121849804760999}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CabinetLarge
   m_TagString: Untagged
   m_Icon: {fileID: 0}

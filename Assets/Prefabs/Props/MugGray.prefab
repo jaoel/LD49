@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4868924235425204408}
   - component: {fileID: 8035030497650148242}
   - component: {fileID: 5162560716929438554}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MugGray
   m_TagString: Untagged
   m_Icon: {fileID: 0}

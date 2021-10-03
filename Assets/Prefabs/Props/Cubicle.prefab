@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5756801309283369187}
   - component: {fileID: 4491227018504435170}
   - component: {fileID: 7979314001494520610}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cubicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

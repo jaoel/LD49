@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3305816276525102240}
   - component: {fileID: 144322825698486868}
   - component: {fileID: 5694717506194915474}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CabinetSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

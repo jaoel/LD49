@@ -149,9 +149,9 @@ MonoBehaviour:
   collider: {fileID: 583459020483568999}
   minFartForce: 50
   maxFartForce: 100
-  minFartTimer: 5
-  maxFartTimer: 10
-  maxClenchTimer: 5
+  minFartTimer: 2
+  maxFartTimer: 4
+  maxClenchTimer: 3
 --- !u!136 &583459020483568999
 CapsuleCollider:
   m_ObjectHideFlags: 0

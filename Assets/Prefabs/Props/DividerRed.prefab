@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 718769332688077425}
   - component: {fileID: 9047280865072882792}
   - component: {fileID: 7223872832182603298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DividerRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

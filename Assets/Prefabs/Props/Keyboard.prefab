@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8884871772216603963}
   - component: {fileID: 2612041076787405120}
   - component: {fileID: 4055237025557583560}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Keyboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}

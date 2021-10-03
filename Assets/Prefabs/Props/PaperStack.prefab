@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3111338381455787658}
   - component: {fileID: 3610930312130062735}
   - component: {fileID: 384718797772038083}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PaperStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

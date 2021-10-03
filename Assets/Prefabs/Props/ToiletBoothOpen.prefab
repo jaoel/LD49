@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8400832905841349106}
   - component: {fileID: 1239462010474959306}
   - component: {fileID: 8487097546022335236}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ToiletBoothOpen
   m_TagString: Untagged
   m_Icon: {fileID: 0}

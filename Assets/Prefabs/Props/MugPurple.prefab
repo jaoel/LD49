@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 563742098527758141}
   - component: {fileID: 9084236304141927648}
   - component: {fileID: 6761667041928091409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MugPurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}

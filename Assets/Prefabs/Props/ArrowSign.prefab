@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3987835697972675905}
   - component: {fileID: 2990508586762278905}
   - component: {fileID: 1260721874682250814}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ArrowSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}

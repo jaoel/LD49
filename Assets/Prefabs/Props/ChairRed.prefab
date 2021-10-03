@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1938047382418042647}
   - component: {fileID: 6586480004157346531}
   - component: {fileID: 8703412967595883618}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ChairRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

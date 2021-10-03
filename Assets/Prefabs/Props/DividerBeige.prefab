@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4081550999562334762}
   - component: {fileID: 1922094857359451789}
   - component: {fileID: 5842143684630905424}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DividerBeige
   m_TagString: Untagged
   m_Icon: {fileID: 0}
