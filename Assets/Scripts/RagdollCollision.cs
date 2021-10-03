@@ -22,7 +22,7 @@ public class RagdollCollision : MonoBehaviour {
             ragdollPushBody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                 * (-transform.forward + Vector3.up) * Random.Range(25, 35), ForceMode.Impulse);
 
-            other.attachedRigidbody.AddForce((-transform.forward + Vector3.up) * Random.Range(75, 150), ForceMode.Impulse);
+            other.attachedRigidbody.AddForce((-transform.forward + Vector3.up) * Random.Range(25, 35), ForceMode.Impulse);
         }
     }
 }
