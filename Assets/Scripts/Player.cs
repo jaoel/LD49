@@ -171,6 +171,13 @@ namespace LD49 {
         }
 
         private void Fart() {
+            float clenchAmount = clenchTimer / maxClenchTimer;
+            foreach (Rigidbody rb in FindObjectsOfType<Rigidbody>()) {
+                if (rb != rigidbody && !rb.isKinematic && Vector3.Distance(rb.position, farticleSystem.transform.position) < 5f) {
+                    rb.AddExplosionForce(1000f + 1000f * clenchAmount, farticleSystem.transform.position - Vector3.up, 5f);
+                }
+            }
+
             if (!rigidbody.isKinematic) {
                 ToggleRagdoll();
             }
@@ -269,9 +276,11 @@ namespace LD49 {
                     spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
 
-                    fartWarningYellow.SetActive(false);
-                    fartWarningRed.SetActive(false);
-                    fartTimer = 0.0f;
+                    //fartWarningYellow.SetActive(false);
+                    //fartWarningRed.SetActive(false);
+                    //fartTimer = 0.0f;
+                    clenchTimer = 0f;
+                    UIManager.Instance.ToggleClenchBar(false);
                 }
             }
         }
