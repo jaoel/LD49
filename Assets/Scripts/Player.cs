@@ -260,19 +260,19 @@ namespace LD49 {
         }
 
         private void OnCollisionEnter(Collision collision) {
-            if (LayerMask.LayerToName(collision.collider.gameObject.layer) == "Props") {
-                if (currentVelocity >= maxMovementVelocity * 0.75f) {
-                    if (!rigidbody.isKinematic) {
-                        ToggleRagdoll();
-                    }
-
-                    spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
-                        * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
-
-                    fartWarningYellow.SetActive(false);
-                    fartTimer = 0.0f;
-                }
-            }
+            //if (LayerMask.LayerToName(collision.collider.gameObject.layer) == "Props") {
+            //    if (currentVelocity >= maxMovementVelocity * 0.75f) {
+            //        if (!rigidbody.isKinematic) {
+            //            ToggleRagdoll();
+            //        }
+            //
+            //        spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
+            //            * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
+            //
+            //        fartWarningYellow.SetActive(false);
+            //        fartTimer = 0.0f;
+            //    }
+            //}
         }
 
         private void OnCollisionStay(Collision collision) {

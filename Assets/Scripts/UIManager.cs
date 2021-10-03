@@ -12,6 +12,9 @@ namespace LD49 {
         [SerializeField]
         private Image clenchBackground = null;
 
+        [SerializeField]
+        private Image chaosBar = null;
+
 
         private static UIManager _instance;
         public static UIManager Instance {

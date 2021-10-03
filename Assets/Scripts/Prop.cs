@@ -3,5 +3,9 @@
 namespace LD49 {
     public class Prop : MonoBehaviour {
         public float score = 10f;
+
+        public void OnCollisionEnter(Collision collision) {
+            
+        }
     }
 }
