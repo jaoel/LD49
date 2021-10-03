@@ -56,5 +56,9 @@ namespace LD49 {
         public void UpdateClenchBar(float clenchValue) {
             clenchBar.transform.localScale = new Vector3(clenchValue, 1.0f, 1.0f);
         }
+
+        public void UpdateChaos(float chaosValue) {
+
+        }
     }
 }

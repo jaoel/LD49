@@ -726,6 +726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clenchBar: {fileID: 2024797298}
   clenchBackground: {fileID: 85556787}
+  chaosBar: {fileID: 796663690}
 --- !u!1 &1579437262
 GameObject:
   m_ObjectHideFlags: 0
