@@ -8,6 +8,13 @@ namespace LD49 {
         [SerializeField]
         private GameObject marker = null;
 
+        Vector3 posOffset = new Vector3();
+        Vector3 tempPos = new Vector3();
+
+        private void Start() {
+            posOffset = marker.transform.position;
+        }
+
         private void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent(out Player player)) {
                 PlayerEnter?.Invoke();
@@ -23,7 +30,10 @@ namespace LD49 {
             }
 
             if (marker.activeSelf) {
+                tempPos = posOffset;
+                tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * 0.5f) * 0.5f;
 
+                marker.transform.position = tempPos;
             }
         }
     }
