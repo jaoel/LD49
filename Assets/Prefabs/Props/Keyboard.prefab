@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2612041076787405120}
   - component: {fileID: 4055237025557583560}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Keyboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4776196642745849114}
-  m_Mesh: {fileID: -5495902117074765545, guid: 57ad95cf5124ae4419749e48f33ba4a7, type: 3}
+  m_Mesh: {fileID: -327218276259777663, guid: 57ad95cf5124ae4419749e48f33ba4a7, type: 3}
 --- !u!23 &6124375642410065909
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -5495902117074765545, guid: 57ad95cf5124ae4419749e48f33ba4a7, type: 3}
+  m_Mesh: {fileID: -327218276259777663, guid: 57ad95cf5124ae4419749e48f33ba4a7, type: 3}
 --- !u!114 &4055237025557583560
 MonoBehaviour:
   m_ObjectHideFlags: 0
