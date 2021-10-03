@@ -7,7 +7,10 @@ namespace LD49 {
     public class Player : MonoBehaviour {
 
         [SerializeField]
-        private GameObject fartWarning = null;
+        private GameObject fartWarningYellow = null;
+
+        [SerializeField]
+        private GameObject fartWarningRed = null;
 
         [SerializeField]
         private Animator animator = null;
@@ -52,9 +55,12 @@ namespace LD49 {
         [SerializeField]
         private float maxClenchTimer = 0.0f;
 
+        private const float fartWarningDuration = 2f;
+
         private float fartTimer = 0.0f;
         private float clenchTimer = 0.0f;
         private float deadTimer = 0.0f;
+        private float warningWobbleTime = 0f;
 
         private void Awake() {
             boneRotations = armature.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
@@ -68,6 +74,8 @@ namespace LD49 {
         }
 
         private void Start() {
+            fartWarningRed.SetActive(false);
+            fartWarningYellow.SetActive(false);
             SetFartTimer();
         }
 
@@ -85,8 +93,12 @@ namespace LD49 {
             bool farted = false;
             if (fartTimer > 0) {
 
-                if (fartTimer - Time.time < 2.0f) {
-                    fartWarning.SetActive(true);
+                if (FartImminent()) {
+                    fartWarningYellow.SetActive(false);
+                    fartWarningRed.SetActive(true);
+                } else if (WillFartSoon()) {
+                    fartWarningYellow.SetActive(true);
+                    fartWarningRed.SetActive(false);
                 }
 
                 if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
@@ -100,6 +112,24 @@ namespace LD49 {
             if (!farted) {
                 ResetPlayer();
             }
+
+            float farty = 1f - HowFarty();
+            warningWobbleTime += Time.deltaTime * farty * 5f;
+            float warningScale = Mathf.Lerp(1f, 1.25f + 0.25f * Mathf.Sin(warningWobbleTime * 5f) * farty, farty);
+            fartWarningYellow.transform.rotation = fartWarningRed.transform.rotation = Quaternion.identity;
+            fartWarningYellow.transform.localScale = fartWarningRed.transform.localScale = Vector3.one * warningScale;
+        }
+
+        private bool WillFartSoon() {
+            return fartTimer - Time.time < fartWarningDuration;
+        }
+
+        private bool FartImminent() {
+            return fartTimer - Time.time < fartWarningDuration / 4f;
+        }
+
+        private float HowFarty() {
+            return (fartTimer - Time.time) / fartWarningDuration;
         }
 
         private void ResetPlayer() {
@@ -126,8 +156,8 @@ namespace LD49 {
 
             if (clenchTimer > 0.0f && Input.GetKeyUp(KeyCode.Space)) {
                 clenchTimer = 0.0f;
-            
-                if (fartWarning.activeSelf) {
+
+                if (WillFartSoon()) {
                     Fart();
                 }
 
@@ -137,7 +167,7 @@ namespace LD49 {
 
         private void SetFartTimer() {
             fartTimer = Time.time + Random.Range(minFartTimer, maxFartTimer);
-            fartWarning.SetActive(false);
+            fartWarningYellow.SetActive(false);
         }
 
         private void Fart() {
@@ -151,8 +181,11 @@ namespace LD49 {
             farticleSystem.Play();
             spineRigidbody.AddForce(force, ForceMode.Impulse);
 
-            fartWarning.SetActive(false);
             fartTimer = 0.0f;
+            clenchTimer = 0f;
+            UIManager.Instance.ToggleClenchBar(false);
+            fartWarningYellow.SetActive(false);
+            fartWarningRed.SetActive(false);
             //SetFartTimer();
         }
 
@@ -236,7 +269,7 @@ namespace LD49 {
                     spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
 
-                    fartWarning.SetActive(false);
+                    fartWarningYellow.SetActive(false);
                     fartTimer = 0.0f;
                 }
             }

@@ -9,11 +9,7 @@ namespace LD49 {
         public static GameManager Instance {
             get {
                 if (_instance == null) {
-#if UNITY_EDITOR
-                    _instance = GameObject.Instantiate(UnityEditor.AssetDatabase.LoadAssetAtPath<GameManager>("Prefabs/GameManager"));
-#else
                     Debug.LogError("A GameManager is required");
-#endif
                 }
                 return _instance;
             }
