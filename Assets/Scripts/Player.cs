@@ -276,9 +276,6 @@ namespace LD49 {
                     spineRigidbody.AddForce(Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), transform.forward) * Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up)
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
 
-                    //fartWarningYellow.SetActive(false);
-                    //fartWarningRed.SetActive(false);
-                    //fartTimer = 0.0f;
                     clenchTimer = 0f;
                     UIManager.Instance.ToggleClenchBar(false);
                 }
