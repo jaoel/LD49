@@ -9,11 +9,25 @@ namespace LD49 {
             requestedLevel = level;
         }
 
-        [SerializeField] 
-        private List<Level> levelPrefabs = new List<Level>();
+        private static LevelManager _instance;
+        public static LevelManager Instance {
+            get {
+                if (_instance == null) {
+                    Debug.LogError("A LevelManager is required");
+                }
+                return _instance;
+            }
+        }
+
+        [SerializeField]
+        private LevelHolder levelHolder;
 
         private Level currentLevel = null;
         private int currentLevelIndex = -1;
+
+        private void Awake() {
+            _instance = this;
+        }
 
         private void Start() {
             currentLevel = FindObjectOfType<Level>();
@@ -30,13 +44,23 @@ namespace LD49 {
             }
         }
 
+        public void RecordCurrentLevelWin() {
+            if (currentLevel != null) {
+                PlayerPrefs.SetInt($"level{currentLevelIndex}", 1);
+            }
+        }
+
+        public void RequestNextLevel() {
+            requestedLevel = currentLevelIndex + 1;
+        }
+
         private void LoadLevel(int index) {
-            if (index < 0 || index >= levelPrefabs.Count) {
+            if (index < 0 || index >= levelHolder.levelPrefabs.Count) {
                 Debug.LogError($"There is no level with index {index}");
                 return;
             }
 
-            Level levelPrefab = levelPrefabs[index];
+            Level levelPrefab = levelHolder.levelPrefabs[index];
             if (levelPrefab == null) {
                 Debug.LogError($"Level with index {index} is null");
                 return;

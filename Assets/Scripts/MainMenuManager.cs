@@ -6,6 +6,8 @@ namespace LD49 {
 
         public GameObject mainObject;
         public GameObject levelSelectObject;
+        public LevelHolder levelHolder;
+        public GameObject levelSelectButtons;
 
         private void Awake() {
             mainObject.SetActive(true);
@@ -17,18 +19,32 @@ namespace LD49 {
         }
 
         public void StartGame() {
-            LevelManager.RequestLevel(0);
-            SceneManager.LoadScene("MainScene");
+            StartLevel(0);
         }
 
         public void LevelSelect() {
             mainObject.SetActive(false);
             levelSelectObject.SetActive(true);
+
+            int i = 1;
+            foreach (Transform button in levelSelectButtons.transform) {
+                if (levelHolder.levelPrefabs.Count < i) {
+                    button.gameObject.SetActive(false);
+                } else {
+                    button.gameObject.SetActive(true);
+                }
+                i++;
+            }
         }
 
         public void BackFromLevelSelect() {
             mainObject.SetActive(true);
             levelSelectObject.SetActive(false);
+        }
+
+        public void StartLevel(int index) {
+            LevelManager.RequestLevel(index);
+            SceneManager.LoadScene("MainScene");
         }
 
         private void Update() {
