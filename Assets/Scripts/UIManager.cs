@@ -13,6 +13,9 @@ namespace LD49 {
         private Image clenchBackground = null;
 
         [SerializeField]
+        private TMPro.TMP_Text clenchText = null;
+
+        [SerializeField]
         private Image chaosBar = null;
 
         [SerializeField]
@@ -54,10 +57,12 @@ namespace LD49 {
             if (on) {
                 clenchBar.DOFade(1.0f, 0.5f);
                 clenchBackground.DOFade(1.0f, 0.5f);
+                clenchText.DOFade(1.0f, 0.5f);
             }
             else {
                 clenchBar.DOFade(0.0f, 0.5f);
                 clenchBackground.DOFade(0.0f, 0.5f);
+                clenchText.DOFade(0.0f, 0.5f);
             }
         }
 
