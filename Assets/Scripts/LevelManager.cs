@@ -16,6 +16,10 @@ namespace LD49 {
         private int currentLevelIndex = -1;
 
         private void Start() {
+            currentLevel = FindObjectOfType<Level>();
+            if (currentLevel != null) {
+                requestedLevel = -1;
+            }
             GameManager.MusicManager.PlayGameMusic();
         }
 
