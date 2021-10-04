@@ -29,6 +29,7 @@ namespace LD49 {
         public AudioClip fadeClip2;
 
         public AudioSource audioSource;
+        public AudioSource audioSourceUI;
 
         public static GameManager Instance {
             get {
@@ -137,11 +138,11 @@ namespace LD49 {
         }
 
         public void PlayUIHover() {
-            audioSource.PlayOneShot(fanfareClip, 0.5f);
+            audioSourceUI.PlayOneShot(hoverClip, 0.5f);
         }
 
         public void PlayUIClick() {
-            audioSource.PlayOneShot(fanfareClip, 0.5f);
+            audioSourceUI.PlayOneShot(clickClip, 0.5f);
         }
     }
 }
