@@ -55,6 +55,12 @@ namespace LD49 {
         [SerializeField]
         private float maxClenchTimer = 0.0f;
 
+        [SerializeField]
+        private List<AudioClip> fartSounds = null;
+
+        [SerializeField]
+        private AudioSource audioSource = null;
+
         private const float fartWarningDuration = 2f;
 
         private float fartTimer = 0.0f;
@@ -213,6 +219,9 @@ namespace LD49 {
             UIManager.Instance.ToggleClenchBar(false);
             fartWarningYellow.SetActive(false);
             fartWarningRed.SetActive(false);
+
+            audioSource.clip = fartSounds[Random.Range(0, fartSounds.Count)];
+            audioSource.Play();
             //SetFartTimer();
         }
 
