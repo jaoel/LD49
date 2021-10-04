@@ -7,6 +7,15 @@ namespace LD49 {
         public Vector3 offset;
         public Transform target;
 
+        private void Update() {
+            if (target == null) {
+                GameObject player = GameObject.Find("Player");
+                if (player != null) {
+                    target = player.transform;
+                }
+            }
+        }
+
         private void LateUpdate() {
             if (target != null) {
                 transform.position = Vector3.Lerp(transform.position, target.position + offset, 2f * Time.deltaTime);
