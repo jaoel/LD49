@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LD49 {
@@ -16,13 +17,19 @@ namespace LD49 {
         [SerializeField]
         private Animator animator;
 
+        [SerializeField]
+        private List<AudioClip> screams = null;
+
         public Collider playerCollider;
 
         private AnimationType currentAnimation;
+        private AudioSource audioSource = null;
 
         public Transform spineBone;
 
         private void Awake() {
+
+            audioSource = GetComponent<AudioSource>();
             foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>()) {
                 rb.isKinematic = true;
             }
@@ -57,6 +64,10 @@ namespace LD49 {
         }
 
         public void SetRagdoll(Vector3 explosionPosition, float explosionForce) {
+
+            audioSource.clip = screams[UnityEngine.Random.Range(0, screams.Count)];
+            audioSource.Play();
+
             animator.enabled = false;
             playerCollider.enabled = false;
             foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>()) {
