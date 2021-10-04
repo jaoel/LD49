@@ -303,6 +303,8 @@ namespace LD49 {
 
                     clenchTimer = 0f;
                     UIManager.Instance.ToggleClenchBar(false);
+
+                    collision.rigidbody.AddExplosionForce(50.0f, collision.GetContact(0).point, 5.0f, 10.0f, ForceMode.Impulse);
                 }
             }
         }

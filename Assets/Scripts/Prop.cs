@@ -2,7 +2,13 @@
 
 namespace LD49 {
     public class Prop : MonoBehaviour {
-        public float score = 2f;
+        public float score = 1f;
+
+        private Rigidbody rigidBody = null;
+
+        private void Awake() {
+            rigidBody = GetComponent<Rigidbody>();
+        }
 
         private float cooldownTime = 0f;
 
