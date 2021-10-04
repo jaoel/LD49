@@ -22,6 +22,9 @@ namespace LD49 {
         private Gradient chaosGradient = null;
 
         [SerializeField]
+        private Gradient clenchGradient = null;
+
+        [SerializeField]
         private TMPro.TextMeshProUGUI objectiveText = null;
 
         [SerializeField]
@@ -29,6 +32,9 @@ namespace LD49 {
 
         [SerializeField]
         private RectTransform chaosWrapper = null;
+
+        [SerializeField]
+        private RectTransform clenchWrapper = null;
 
         private static UIManager _instance;
         public static UIManager Instance {
@@ -54,12 +60,19 @@ namespace LD49 {
         }
 
         float noiseTime = 0f;
+        float clenchNoiseTime = 0f;
         private void Update() {
             float chaos = GameManager.Instance.GetChaos();
             noiseTime += Time.unscaledDeltaTime;
             float t = noiseTime * Mathf.Lerp(5f, 15f, chaos);
             Vector2 noise = new Vector2(1f - 2f * Mathf.PerlinNoise(t + 100f, t), Mathf.PerlinNoise(t * 1.2f, t + 200f)) * 35f;
             chaosWrapper.anchoredPosition = noise * chaos;
+
+            clenchNoiseTime += Time.unscaledDeltaTime * 30f;
+            t = clenchNoiseTime;
+            Vector2 clenchNoise = new Vector2(1f - 2f * Mathf.PerlinNoise(t + 400f, t), Mathf.PerlinNoise(t * 1.2f, t + 600f)) * 8f;
+            clenchWrapper.anchoredPosition = clenchNoise * clenchBar.transform.localScale.x;
+            clenchWrapper.localScale = Vector3.one * (1f + 0.01f * Mathf.Sin(Time.unscaledTime * 10f));
         }
 
         public void ToggleClenchBar(bool on) {
@@ -77,6 +90,7 @@ namespace LD49 {
 
         public void UpdateClenchBar(float clenchValue) {
             clenchBar.transform.localScale = new Vector3(clenchValue, 1.0f, 1.0f);
+            clenchBar.color = clenchGradient.Evaluate(clenchValue);
         }
 
         public void UpdateChaos(float chaosValue) {
