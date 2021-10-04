@@ -61,6 +61,7 @@ namespace LD49 {
         private float clenchTimer = 0.0f;
         private float deadTimer = 0.0f;
         private float warningWobbleTime = 0f;
+        private bool hasMoved = false;
 
         private void Awake() {
             boneRotations = armature.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
@@ -80,6 +81,10 @@ namespace LD49 {
         }
 
         private void Update() {
+            if (!hasMoved) {
+                SetFartTimer();
+            }
+
             Movement();
 
             if (Input.GetKeyDown(KeyCode.Return)) {
@@ -235,14 +240,18 @@ namespace LD49 {
 
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
                 forwardDir = Camera.main.transform.forward;
+                hasMoved = true;
             } else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
                 forwardDir = -Camera.main.transform.forward;
+                hasMoved = true;
             }
 
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
                 rightDir = Camera.main.transform.right;
+                hasMoved = true;
             } else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
                 rightDir = -Camera.main.transform.right;
+                hasMoved = true;
             }
 
             Vector3 direction = (new Vector3(forwardDir.x, 0.0f, forwardDir.z) + new Vector3(rightDir.x, 0.0f, rightDir.z)).normalized;// new Vector3(dirX, 0.0f, dirZ);
