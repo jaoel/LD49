@@ -54,6 +54,10 @@ namespace LD49 {
         }
 
         private void Update() {
+            if (SceneManager.GetActiveScene().name == "EndScene" && Input.anyKeyDown) {
+                LoadMainMenu();
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 if (SceneManager.GetActiveScene().name != "Bootstrap") {
                     LoadMainMenu();
@@ -73,6 +77,14 @@ namespace LD49 {
         public void LoadMainMenu() {
             FadeToBlack(() => {
                 SceneManager.LoadScene("Bootstrap");
+                FadeFromBlack();
+                Destroy(UIManager.Instance.gameObject);
+            });
+        }
+
+        public void LoadEnd() {
+            FadeToBlack(() => {
+                SceneManager.LoadScene("EndScene");
                 FadeFromBlack();
                 Destroy(UIManager.Instance.gameObject);
             });
