@@ -19,7 +19,7 @@ namespace LD49 {
         private new Rigidbody rigidbody = null;
 
         [SerializeField]
-        private Rigidbody spineRigidbody = null;
+        public Rigidbody spineRigidbody = null;
 
         [SerializeField]
         private ParticleSystem farticleSystem = null;

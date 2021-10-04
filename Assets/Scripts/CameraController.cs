@@ -9,9 +9,9 @@ namespace LD49 {
 
         private void Update() {
             if (target == null) {
-                GameObject player = GameObject.Find("Player");
+                Player player = FindObjectOfType<Player>();
                 if (player != null) {
-                    target = player.transform.Find("Visual/Player/Armature/root/spine1").transform;
+                    target = player.spineRigidbody.transform;
                 }
             }
         }
