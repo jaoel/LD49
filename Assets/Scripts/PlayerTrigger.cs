@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace LD49 {
     public class PlayerTrigger : MonoBehaviour {
         public delegate void PlayerTriggerDelegate();
         public event PlayerTriggerDelegate PlayerEnter;
+        public UnityEvent playerEnterUnityEvent = new UnityEvent();
+        public bool hasUnityEvent = false;
 
         [SerializeField]
         private GameObject marker = null;
@@ -21,18 +24,20 @@ namespace LD49 {
         private void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent(out Player player)) {
                 PlayerEnter?.Invoke();
+                playerEnterUnityEvent?.Invoke();
             }
         }
 
         private void Update() {
-            if (PlayerEnter != null && marker != null && !marker.activeInHierarchy) {
-                marker.SetActive(true);
-            }
-            else if (PlayerEnter == null) {
-                if (particles!= null && marker.activeInHierarchy) {
-                    particles.Play();
+            if (!hasUnityEvent) {
+                if (PlayerEnter != null && marker != null && !marker.activeInHierarchy) {
+                    marker.SetActive(true);
+                } else if (PlayerEnter == null) {
+                    if (particles != null && marker.activeInHierarchy) {
+                        particles.Play();
+                    }
+                    marker.SetActive(false);
                 }
-                marker.SetActive(false);
             }
 
             if (marker.activeSelf) {
