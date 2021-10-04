@@ -78,9 +78,10 @@ namespace LD49 {
             }
 
             Debug.Log($"Loading '{levelPrefab.name}' at index {index}");
-            GameManager.Instance.ResetChaos();
-            currentLevelIndex = index;
             currentLevel = Instantiate(levelPrefab);
+            currentLevelIndex = index;
+            GameManager.Instance.ResetChaos();
+            Time.timeScale = 1f;
 
             GameManager.Instance.FadeFromBlack();
         }
