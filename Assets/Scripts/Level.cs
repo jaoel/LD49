@@ -21,16 +21,24 @@ namespace LD49 {
             //endTrigger.PlayerEnter +=
             //OnPlayerTriggerEnd;
             currentObjective = 0;
-            playerTriggers[currentObjective].PlayerEnter += OnPlayerTriggerEnd;
+
+            if (playerTriggers != null && playerTriggers.Count > 0) {
+                playerTriggers[currentObjective].PlayerEnter += OnPlayerTriggerEnd;
+
+            }
 
         }
 
         private void OnDisable() {
             //endTrigger.PlayerEnter -= OnPlayerTriggerEnd;
 
-            playerTriggers?.ForEach(x => {
-                x.PlayerEnter -= OnPlayerTriggerEnd;
-            });
+            if (playerTriggers != null && playerTriggers.Count > 0) {
+                playerTriggers?.ForEach(x => {
+                    x.PlayerEnter -= OnPlayerTriggerEnd;
+                });
+            }
+
+
         }
 
         private void Start() {
@@ -40,18 +48,22 @@ namespace LD49 {
                 player.transform.eulerAngles = new Vector3(0f, startPosition.eulerAngles.y, 0f);
             }
 
-            UIManager.Instance.ShowObjective(objectiveText[currentObjective]);
+            if (objectiveText != null && objectiveText.Count > 0) {
+                UIManager.Instance.ShowObjective(objectiveText[currentObjective]);
+            }
         }
 
         private void OnPlayerTriggerEnd() {
-            playerTriggers[currentObjective++].PlayerEnter -= OnPlayerTriggerEnd;
+
+            if (playerTriggers != null && playerTriggers.Count > 0) {
+                playerTriggers[currentObjective++].PlayerEnter -= OnPlayerTriggerEnd;
+            }
 
             if (currentObjective >= playerTriggers.Count) {
                 LevelManager.Instance.RecordCurrentLevelWin();
                 LevelManager.Instance.RequestNextLevel();
                 //U WIN LMAO
-            }
-            else {
+            } else {
                 playerTriggers[currentObjective].PlayerEnter += OnPlayerTriggerEnd;
                 UIManager.Instance.ShowObjective(objectiveText[currentObjective]);
             }
