@@ -368,6 +368,10 @@ MonoBehaviour:
   maxChaos: 100
   deadTime: 0
   fanfareClip: {fileID: 8300000, guid: 322e4f85bef828a4a8af0b6f4cfa388f, type: 3}
+  hoverClip: {fileID: 0}
+  clickClip: {fileID: 0}
+  fadeClip: {fileID: 8300000, guid: 477a73d027a10b948b059d2e6c7e9c9c, type: 3}
+  fadeClip2: {fileID: 8300000, guid: a740fe74d2330634badbac865d895d9a, type: 3}
   audioSource: {fileID: 3028867605797423150}
   musicManager: {fileID: 7857560351733758816}
 --- !u!82 &3028867605797423150
