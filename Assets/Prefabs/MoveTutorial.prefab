@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4961a24b5c80b5d48811c81c7b8d3b90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textObject: {fileID: 0}
+  textObject: {fileID: 8084354126747885787}
   buttons:
   - {fileID: 8084354125758687083}
   - {fileID: 8084354125276168860}
