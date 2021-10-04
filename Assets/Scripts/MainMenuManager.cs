@@ -65,7 +65,7 @@ namespace LD49 {
 
                     foreach (Rigidbody rb in FindObjectsOfType<Rigidbody>()) {
                         if (Vector3.Distance(rb.position, pos) < 5f) {
-                            rb.AddExplosionForce(500f, pos, 5f);
+                            rb.AddExplosionForce(1000f, pos, 10f);
                         }
                     }
                 }

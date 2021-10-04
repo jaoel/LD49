@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 namespace LD49 {
     public class LevelManager : MonoBehaviour {
         private static int requestedLevel = 0;
+        private static bool loadingLevel = false;
         public static void RequestLevel(int level) {
             requestedLevel = level;
         }
@@ -61,6 +62,11 @@ namespace LD49 {
         }
 
         private void LoadLevel(int index) {
+            if (loadingLevel) {
+                return;
+            }
+
+            loadingLevel = true;
             DOTween.KillAll();
             if (index < 0 || index >= levelHolder.levelPrefabs.Count) {
                 Debug.LogError($"There is no level with index {index}");
@@ -74,6 +80,7 @@ namespace LD49 {
             }
 
             GameManager.Instance.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
+            loadingLevel = false;
         }
 
         private void LoadLevelActually(Level levelPrefab, int index) {
