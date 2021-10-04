@@ -87,6 +87,7 @@ namespace LD49 {
         }
 
         private void Update() {
+            bool farted = false;
             if (GameManager.Instance.IsDead) {
                 if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
                     Fart();
@@ -95,7 +96,6 @@ namespace LD49 {
                 if (fartTimer == 0.0f) {
                     SetFartTimer();
                 }
-
                 return;
             }
 
@@ -108,7 +108,6 @@ namespace LD49 {
             if (Input.GetKeyDown(KeyCode.Backspace)) {
                 ToggleRagdoll();
             }
-            bool farted = false;
             if (fartTimer > 0) {
 
                 if (FartImminent()) {

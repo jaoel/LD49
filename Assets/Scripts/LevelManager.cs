@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -55,6 +56,7 @@ namespace LD49 {
         }
 
         private void LoadLevel(int index) {
+            DOTween.KillAll();
             if (index < 0 || index >= levelHolder.levelPrefabs.Count) {
                 Debug.LogError($"There is no level with index {index}");
                 return;

@@ -13,6 +13,7 @@ namespace LD49 {
         private int maxChaos = 100;
 
         private static GameManager _instance;
+        private Tweener timeScale = null;
 
         public bool IsDead => chaosScore >= maxChaos;
 
@@ -64,10 +65,11 @@ namespace LD49 {
         }
 
         public void UpdateChaos(float score) {
-            SetChaos(chaosScore + score);
-
-            if (chaosScore >= maxChaos) {
-                DOTween.To(x => Time.timeScale = x, Time.timeScale, 0.3f, 2.0f);
+            if (!IsDead) {
+                SetChaos(chaosScore + score);
+                if (chaosScore >= maxChaos) {
+                    DOTween.To(x => Time.timeScale = x, Time.timeScale, 0.3f, 2.0f);
+                }
             }
         }
 
