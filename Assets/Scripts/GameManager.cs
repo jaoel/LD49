@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -52,6 +53,10 @@ namespace LD49 {
 
         public void ResetChaos() {
             SetChaos(0f);
+        }
+
+        internal float GetChaos() {
+            return chaosScore / (float)maxChaos;
         }
 
         public void UpdateChaos(float score) {

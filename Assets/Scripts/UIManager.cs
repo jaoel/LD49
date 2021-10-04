@@ -27,6 +27,9 @@ namespace LD49 {
         [SerializeField]
         private CanvasGroup objectiveGroup = null;
 
+        [SerializeField]
+        private RectTransform chaosWrapper = null;
+
         private static UIManager _instance;
         public static UIManager Instance {
             get {
@@ -50,7 +53,13 @@ namespace LD49 {
             DontDestroyOnLoad(gameObject);
         }
 
+        float noiseTime = 0f;
         private void Update() {
+            float chaos = GameManager.Instance.GetChaos();
+            noiseTime += Time.unscaledDeltaTime;
+            float t = noiseTime * Mathf.Lerp(5f, 15f, chaos);
+            Vector2 noise = new Vector2(1f - 2f * Mathf.PerlinNoise(t + 100f, t), Mathf.PerlinNoise(t * 1.2f, t + 200f)) * 35f;
+            chaosWrapper.anchoredPosition = noise * chaos;
         }
 
         public void ToggleClenchBar(bool on) {
