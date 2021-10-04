@@ -8,6 +8,9 @@ namespace LD49 {
         [SerializeField]
         private GameObject marker = null;
 
+        [SerializeField]
+        private ParticleSystem particles = null;
+
         Vector3 posOffset = new Vector3();
         Vector3 tempPos = new Vector3();
 
@@ -26,6 +29,9 @@ namespace LD49 {
                 marker.SetActive(true);
             }
             else if (PlayerEnter == null) {
+                if (particles!= null && marker.activeInHierarchy) {
+                    particles.Play();
+                }
                 marker.SetActive(false);
             }
 
