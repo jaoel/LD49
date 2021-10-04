@@ -54,10 +54,6 @@ namespace LD49 {
                 UpdateAnimationIndex();
             }
 
-            if (Input.GetKeyDown(KeyCode.P)) {
-                SetRagdoll(transform.position, 100f);
-            }
-
             if (spineBone.position.y < -5f) {
                 Destroy(gameObject);
             }
