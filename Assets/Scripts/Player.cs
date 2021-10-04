@@ -294,9 +294,10 @@ namespace LD49 {
             }
 
             if (currentVelocity > 0.0f) {
-                transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 4.0f * Time.deltaTime, 0.0f).normalized;
-                Vector3 movementDir = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
-                rigidbody.velocity = Vector3.Scale(movementDir, new Vector3(currentVelocity,  -Physics.gravity.y, currentVelocity));
+                //Vector3 oldForward = transform.forward;
+                transform.forward = Vector3.RotateTowards(transform.forward.normalized, direction.normalized, 7.00f * Time.deltaTime, 0.0f).normalized;
+                //Vector3 movementDir = Vector3.RotateTowards(oldForward, direction.normalized, 0.5f * Time.deltaTime, 0.0f).normalized;
+                rigidbody.velocity = Vector3.Scale((transform.forward.normalized), new Vector3(currentVelocity, -Physics.gravity.y, currentVelocity));
 
                 if (animator != null) {
                     animator.SetFloat("RunSpeed", Mathf.MoveTowards(1.0f, Mathf.Clamp01(currentVelocity / maxMovementVelocity), Time.deltaTime * 0.1f));
