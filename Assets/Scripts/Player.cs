@@ -87,16 +87,23 @@ namespace LD49 {
         }
 
         private void Update() {
+            if (GameManager.Instance.IsDead) {
+                if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
+                    Fart();
+                }
+
+                if (fartTimer == 0.0f) {
+                    SetFartTimer();
+                }
+
+                return;
+            }
+
             if (!hasMoved) {
                 SetFartTimer();
             }
 
             Movement();
-
-            if (Input.GetKeyDown(KeyCode.Return)) {
-                //ToggleRagdoll();
-                Fart();
-            }
 
             if (Input.GetKeyDown(KeyCode.Backspace)) {
                 ToggleRagdoll();

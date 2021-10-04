@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
@@ -12,6 +13,9 @@ namespace LD49 {
         private int maxChaos = 100;
 
         private static GameManager _instance;
+
+        public bool IsDead => chaosScore >= maxChaos;
+
         public static GameManager Instance {
             get {
                 if (_instance == null) {
@@ -61,6 +65,10 @@ namespace LD49 {
 
         public void UpdateChaos(float score) {
             SetChaos(chaosScore + score);
+
+            if (chaosScore >= maxChaos) {
+                DOTween.To(x => Time.timeScale = x, Time.timeScale, 0.3f, 2.0f);
+            }
         }
 
         private void SetChaos(float value) {
