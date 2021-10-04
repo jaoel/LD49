@@ -22,6 +22,10 @@ namespace LD49 {
         public bool IsDead => chaosScore >= maxChaos;
         public float deadTime = 0.0f;
 
+        public AudioClip fanfareClip;
+
+        public AudioSource audioSource;
+
         public static GameManager Instance {
             get {
                 if (_instance == null) {
@@ -103,6 +107,10 @@ namespace LD49 {
 
         public void FadeFromBlack() {
             fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true);
+        }
+
+        public void PlayFanfare() {
+            audioSource.PlayOneShot(fanfareClip, 0.5f);
         }
     }
 }

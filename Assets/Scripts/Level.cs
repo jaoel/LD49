@@ -55,6 +55,7 @@ namespace LD49 {
             }
 
             if (currentObjective >= playerTriggers.Count) {
+                GameManager.Instance.PlayFanfare();
                 LevelManager.Instance.RecordCurrentLevelWin();
                 LevelManager.Instance.RequestNextLevel();
                 //U WIN LMAO
