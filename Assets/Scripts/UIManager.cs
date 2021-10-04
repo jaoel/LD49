@@ -88,9 +88,9 @@ namespace LD49 {
             objectiveText.text = text;
 
             Sequence objSequence = DOTween.Sequence();
-            objSequence.Append(objectiveGroup.DOFade(2.0f, 1.0f));
-            objSequence.AppendInterval(1.0f);
-            objSequence.Append(objectiveGroup.DOFade(0.0f, 2.0f));
+            //objSequence.Append(objectiveGroup.DOFade(2.0f, 1.0f));
+            //objSequence.AppendInterval(1.0f);
+            //objSequence.Append(objectiveGroup.DOFade(0.0f, 2.0f));
         }
     }
 }

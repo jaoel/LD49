@@ -20,6 +20,7 @@ namespace LD49 {
         private Tweener timeScale = null;
 
         public bool IsDead => chaosScore >= maxChaos;
+        public float deadTime = 0.0f;
 
         public static GameManager Instance {
             get {
@@ -51,11 +52,20 @@ namespace LD49 {
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 if (SceneManager.GetActiveScene().name != "Bootstrap") {
-                    SceneManager.LoadScene("Bootstrap");
+                    FadeToBlack(() => {
+                        SceneManager.LoadScene("Bootstrap");
+                        FadeFromBlack();
+                        Destroy(UIManager.Instance.gameObject);
+                    });
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.Tab)) {
+                LevelManager.Instance.ReloadLevel();
+            }
+
+            if (deadTime > 0.0f && deadTime - Time.unscaledTime <= 0.0f) {
+                deadTime = 0.0f;
                 LevelManager.Instance.ReloadLevel();
             }
         }
@@ -73,6 +83,7 @@ namespace LD49 {
                 SetChaos(chaosScore + score);
                 if (chaosScore >= maxChaos) {
                     DOTween.To(x => Time.timeScale = x, Time.timeScale, 0.3f, 2.0f);
+                    deadTime = Time.time + 5.0f;
                 }
             }
         }
