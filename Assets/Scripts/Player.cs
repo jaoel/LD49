@@ -190,6 +190,14 @@ namespace LD49 {
                 }
             }
 
+            foreach (NPC npc in FindObjectsOfType<NPC>()) {
+                float dist = Vector3.Distance(npc.transform.position, farticleSystem.transform.position);
+                if (dist < 2f) {
+                    npc.SetRagdoll(farticleSystem.transform.position, 1000f);
+                    GameManager.Instance.UpdateChaos(50f);
+                }
+            }
+
             if (!rigidbody.isKinematic) {
                 ToggleRagdoll();
             }
