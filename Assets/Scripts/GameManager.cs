@@ -44,6 +44,10 @@ namespace LD49 {
                     SceneManager.LoadScene("Bootstrap");
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Tab)) {
+                LevelManager.Instance.ReloadLevel();
+            }
         }
 
         public void UpdateChaos(int score) {

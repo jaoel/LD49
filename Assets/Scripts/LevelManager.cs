@@ -67,12 +67,16 @@ namespace LD49 {
             }
 
             if (currentLevel != null) {
-                Destroy(currentLevel);
+                Destroy(currentLevel.gameObject);
             }
 
             Debug.Log($"Loading '{levelPrefab.name}' at index {index}");
             currentLevelIndex = index;
             currentLevel = Instantiate(levelPrefab);
+        }
+
+        public void ReloadLevel() {
+            LoadLevel(currentLevelIndex);
         }
     }
 }

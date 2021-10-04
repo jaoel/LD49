@@ -11,7 +11,7 @@ namespace LD49 {
             if (target == null) {
                 GameObject player = GameObject.Find("Player");
                 if (player != null) {
-                    target = player.transform;
+                    target = player.transform.Find("Visual/Player/Armature/root/spine1").transform;
                 }
             }
         }
