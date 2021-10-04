@@ -84,14 +84,14 @@ namespace LD49 {
 
         public void FadeToBlack(Action doneCallback) {
             if (fadeImage.color.a > 0.5f) {
-                fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke());
+                fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke()).SetUpdate(true);
             } else {
                 doneCallback?.Invoke();
             }
         }
 
         public void FadeFromBlack() {
-            fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic);
+            fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true);
         }
     }
 }
