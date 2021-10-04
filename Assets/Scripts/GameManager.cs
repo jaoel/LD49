@@ -23,8 +23,13 @@ namespace LD49 {
         public float deadTime = 0.0f;
 
         public AudioClip fanfareClip;
+        public AudioClip hoverClip;
+        public AudioClip clickClip;
+        public AudioClip fadeClip;
+        public AudioClip fadeClip2;
 
         public AudioSource audioSource;
+        public AudioSource audioSourceUI;
 
         public static GameManager Instance {
             get {
@@ -114,6 +119,8 @@ namespace LD49 {
 
         public void FadeToBlack(Action doneCallback) {
             if (fadeImage.color.a > 0.5f) {
+                audioSource.Stop();
+                audioSource.PlayOneShot(fadeClip);
                 fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke()).SetUpdate(true);
             } else {
                 doneCallback?.Invoke();
@@ -121,11 +128,21 @@ namespace LD49 {
         }
 
         public void FadeFromBlack() {
+            audioSource.Stop();
+            audioSource.PlayOneShot(fadeClip2);
             fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true);
         }
 
         public void PlayFanfare() {
             audioSource.PlayOneShot(fanfareClip, 0.5f);
+        }
+
+        public void PlayUIHover() {
+            audioSourceUI.PlayOneShot(hoverClip, 0.5f);
+        }
+
+        public void PlayUIClick() {
+            audioSourceUI.PlayOneShot(clickClip, 0.5f);
         }
     }
 }
