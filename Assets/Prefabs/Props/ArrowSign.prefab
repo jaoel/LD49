@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2467930193097517775}
   - component: {fileID: 4481609668874209419}
   - component: {fileID: 1413079852220062605}
-  - component: {fileID: 1260721874682250814}
   m_Layer: 6
   m_Name: ArrowSign
   m_TagString: Untagged
@@ -83,16 +82,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1260721874682250814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9057651361733104489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ebc5e3a6441cb44391be870cda24a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 10

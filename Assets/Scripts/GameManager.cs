@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace LD49 {
     public class GameManager : MonoBehaviour {
 
-        private int chaosScore = 0;
+        private float chaosScore = 0f;
 
         [SerializeField]
         private int maxChaos = 100;
@@ -50,7 +50,7 @@ namespace LD49 {
             }
         }
 
-        public void UpdateChaos(int score) {
+        public void UpdateChaos(float score) {
             chaosScore += score;
 
             UIManager.Instance.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));

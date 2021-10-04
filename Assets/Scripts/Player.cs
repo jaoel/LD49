@@ -177,9 +177,16 @@ namespace LD49 {
 
         private void Fart() {
             float clenchAmount = clenchTimer / maxClenchTimer;
+            const float explosionDistance = 5f;
             foreach (Rigidbody rb in FindObjectsOfType<Rigidbody>()) {
-                if (rb != rigidbody && !rb.isKinematic && Vector3.Distance(rb.position, farticleSystem.transform.position) < 5f) {
-                    rb.AddExplosionForce(1000f + 1000f * clenchAmount, farticleSystem.transform.position - Vector3.up, 5f);
+                if (rb != rigidbody && !rb.isKinematic) {
+                    float distance = Vector3.Distance(rb.position, farticleSystem.transform.position);
+                    if (distance < explosionDistance) {
+                        rb.AddExplosionForce(1000f + 1000f * clenchAmount, farticleSystem.transform.position - Vector3.up, explosionDistance);
+                        if (rb.TryGetComponent(out Prop prop)) {
+                            prop.AddChaos(0.25f / (1f + distance / explosionDistance));
+                        }
+                    }
                 }
             }
 
