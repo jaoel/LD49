@@ -59,10 +59,15 @@ namespace LD49 {
             }
         }
 
+        private static float lastClipPlayTime = 0f;
         public void SetRagdoll(Vector3 explosionPosition, float explosionForce) {
 
-            audioSource.clip = screams[UnityEngine.Random.Range(0, screams.Count)];
-            audioSource.Play();
+            if (Time.time - lastClipPlayTime > 1f) {
+                lastClipPlayTime = Time.time;
+                audioSource.clip = screams[UnityEngine.Random.Range(0, screams.Count)];
+                audioSource.volume = 0.25f;
+                audioSource.Play();
+            }
 
             animator.enabled = false;
             playerCollider.enabled = false;
