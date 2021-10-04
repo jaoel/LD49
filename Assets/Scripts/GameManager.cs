@@ -50,9 +50,16 @@ namespace LD49 {
             }
         }
 
-        public void UpdateChaos(float score) {
-            chaosScore += score;
+        public void ResetChaos() {
+            SetChaos(0f);
+        }
 
+        public void UpdateChaos(float score) {
+            SetChaos(chaosScore + score);
+        }
+
+        private void SetChaos(float value) {
+            chaosScore = value;
             UIManager.Instance.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));
         }
     }
