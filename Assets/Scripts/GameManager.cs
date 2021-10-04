@@ -56,11 +56,7 @@ namespace LD49 {
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 if (SceneManager.GetActiveScene().name != "Bootstrap") {
-                    FadeToBlack(() => {
-                        SceneManager.LoadScene("Bootstrap");
-                        FadeFromBlack();
-                        Destroy(UIManager.Instance.gameObject);
-                    });
+                    LoadMainMenu();
                 }
             }
 
@@ -72,6 +68,14 @@ namespace LD49 {
                 deadTime = 0.0f;
                 LevelManager.Instance.ReloadLevel();
             }
+        }
+
+        public void LoadMainMenu() {
+            FadeToBlack(() => {
+                SceneManager.LoadScene("Bootstrap");
+                FadeFromBlack();
+                Destroy(UIManager.Instance.gameObject);
+            });
         }
 
         public void ResetChaos() {
@@ -86,7 +90,6 @@ namespace LD49 {
             if (!IsDead) {
                 SetChaos(chaosScore + score);
                 if (chaosScore >= maxChaos) {
-                    DOTween.To(x => Time.timeScale = x, Time.timeScale, 0.3f, 2.0f);
                     deadTime = Time.time + 5.0f;
                 }
             }

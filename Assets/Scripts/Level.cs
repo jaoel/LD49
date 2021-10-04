@@ -44,8 +44,6 @@ namespace LD49 {
             if (objectiveText != null && objectiveText.Count > 0) {
                 UIManager.Instance.ShowObjective(objectiveText[currentObjective]);
             }
-
-            Time.timeScale = 1.0f;
         }
 
         private void OnPlayerTriggerEnd() {

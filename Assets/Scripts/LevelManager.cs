@@ -40,8 +40,13 @@ namespace LD49 {
 
         private void Update() {
             if (requestedLevel != -1 && requestedLevel != currentLevelIndex) {
-                LoadLevel(requestedLevel);
-                requestedLevel = -1;
+                if (requestedLevel >= levelHolder.levelPrefabs.Count) {
+                    GameManager.Instance.LoadMainMenu();
+                    requestedLevel = -1;
+                } else {
+                    LoadLevel(requestedLevel);
+                    requestedLevel = -1;
+                }
             }
         }
 
@@ -81,7 +86,6 @@ namespace LD49 {
             currentLevel = Instantiate(levelPrefab);
             currentLevelIndex = index;
             GameManager.Instance.ResetChaos();
-            Time.timeScale = 1f;
 
             GameManager.Instance.FadeFromBlack();
         }
