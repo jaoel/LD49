@@ -42,6 +42,7 @@ namespace LD49 {
         private void Update() {
             if (requestedLevel != -1 && requestedLevel != currentLevelIndex) {
                 if (requestedLevel >= levelHolder.levelPrefabs.Count) {
+                    loadingLevel = true;
                     GameManager.Instance.LoadEnd();
                     requestedLevel = -1;
                 } else {
