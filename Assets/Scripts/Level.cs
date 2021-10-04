@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace LD49 {
     public class Level : MonoBehaviour {
-        public Transform startPosition;
         //public PlayerTrigger endTrigger;
 
         [SerializeField]
@@ -42,12 +41,6 @@ namespace LD49 {
         }
 
         private void Start() {
-            Player player = FindObjectOfType<Player>();
-            if (player != null) {
-                player.transform.position = startPosition.position;
-                player.transform.eulerAngles = new Vector3(0f, startPosition.eulerAngles.y, 0f);
-            }
-
             if (objectiveText != null && objectiveText.Count > 0) {
                 UIManager.Instance.ShowObjective(objectiveText[currentObjective]);
             }
