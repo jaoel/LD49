@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
 
         private float chaosScore = 0f;
+
+        [SerializeField]
+        private Image fadeImage;
 
         [SerializeField]
         private int maxChaos = 100;
@@ -76,6 +80,18 @@ namespace LD49 {
         private void SetChaos(float value) {
             chaosScore = value;
             UIManager.Instance.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));
+        }
+
+        public void FadeToBlack(Action doneCallback) {
+            if (fadeImage.color.a > 0.5f) {
+                fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke());
+            } else {
+                doneCallback?.Invoke();
+            }
+        }
+
+        public void FadeFromBlack() {
+            fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic);
         }
     }
 }

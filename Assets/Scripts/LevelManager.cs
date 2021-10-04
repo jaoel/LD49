@@ -68,6 +68,11 @@ namespace LD49 {
                 return;
             }
 
+            GameManager.Instance.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
+        }
+
+        private void LoadLevelActually(Level levelPrefab, int index) {
+
             if (currentLevel != null) {
                 Destroy(currentLevel.gameObject);
             }
@@ -76,6 +81,8 @@ namespace LD49 {
             GameManager.Instance.ResetChaos();
             currentLevelIndex = index;
             currentLevel = Instantiate(levelPrefab);
+
+            GameManager.Instance.FadeFromBlack();
         }
 
         public void ReloadLevel() {
