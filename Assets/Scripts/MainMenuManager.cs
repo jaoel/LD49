@@ -24,6 +24,10 @@ namespace LD49 {
             StartLevel(0);
         }
 
+        public void ExitGame() {
+            Application.Quit();
+        }
+
         public void LevelSelect() {
             if (!loading) {
                 mainObject.SetActive(false);
