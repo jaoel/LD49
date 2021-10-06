@@ -131,7 +131,7 @@ namespace LD49 {
         }
 
         public void PlayFanfare() {
-            audioSource.PlayOneShot(fanfareClip, 0.5f);
+            audioSourceUI.PlayOneShot(fanfareClip, 0.5f);
         }
 
         public void PlayUIHover() {
