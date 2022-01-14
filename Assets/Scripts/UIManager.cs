@@ -40,7 +40,7 @@ namespace LD49 {
         public static UIManager Instance {
             get {
                 if (_instance == null) {
-                    Debug.LogError("A GameManager is required");
+                    Debug.LogError("A UIManager is required");
                 }
                 return _instance;
             }
