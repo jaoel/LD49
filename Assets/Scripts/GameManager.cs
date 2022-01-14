@@ -111,7 +111,7 @@ namespace LD49 {
 
         private void SetChaos(float value) {
             chaosScore = value;
-            UIManager.Instance.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));
+            UIManager.Instance?.UpdateChaos(Mathf.Clamp01(chaosScore / (float)maxChaos));
         }
 
         public void FadeToBlack(Action doneCallback) {
