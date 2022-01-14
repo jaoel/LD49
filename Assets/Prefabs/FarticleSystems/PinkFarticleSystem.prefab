@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3731600907822202986}
   - component: {fileID: 3731600907822202989}
   m_Layer: 0
-  m_Name: FarticleSystem
+  m_Name: PinkFarticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1041,21 +1041,21 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.4881897
-          inSlope: 2.2100859
-          outSlope: 2.2100859
+          value: 0.4
+          inSlope: 0.18685278
+          outSlope: 0.18685278
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.09263157
+          outWeight: 0.16467065
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 0.06339243
-          outSlope: 0.06339243
+          inSlope: 1.788235
+          outSlope: 1.788235
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.124210596
+          inWeight: 0.16346163
           outWeight: 0.33333334
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -1192,10 +1192,10 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -1248,7 +1248,7 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -1301,9 +1301,9 @@ ParticleSystem:
         m_RotationOrder: 4
     curve:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0.7853982
-      minScalar: 0.7853982
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
