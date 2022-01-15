@@ -47,7 +47,7 @@ namespace LD49 {
                     GameManager.Instance.LoadEnd();
                     requestedLevel = -1;
                 } else {
-                    LoadLevel(requestedLevel);
+                    TryStartLoadLevel(requestedLevel);
                     requestedLevel = -1;
                 }
             }
@@ -63,26 +63,26 @@ namespace LD49 {
             requestedLevel = currentLevelIndex + 1;
         }
 
-        private void LoadLevel(int index) {
+        private bool TryStartLoadLevel(int index) {
             if (loadingLevel) {
-                return;
+                return false;
             }
 
             loadingLevel = true;
             DOTween.KillAll();
             if (index < 0 || index >= levelHolder.levelPrefabs.Count) {
                 Debug.LogError($"There is no level with index {index}");
-                return;
+                return false;
             }
 
             Level levelPrefab = levelHolder.levelPrefabs[index];
             if (levelPrefab == null) {
                 Debug.LogError($"Level with index {index} is null");
-                return;
+                return false;
             }
 
             GameManager.Instance.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
-            loadingLevel = false;
+            return true;
         }
 
         private void LoadLevelActually(Level levelPrefab, int index) {
@@ -97,10 +97,12 @@ namespace LD49 {
             GameManager.Instance.ResetChaos();
 
             GameManager.Instance.FadeFromBlack();
+
+            loadingLevel = false;
         }
 
         public void ReloadLevel() {
-            LoadLevel(currentLevelIndex);
+            TryStartLoadLevel(currentLevelIndex);
         }
     }
 }

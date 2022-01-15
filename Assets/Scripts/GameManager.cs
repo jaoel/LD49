@@ -63,13 +63,15 @@ namespace LD49 {
                 LevelManager.Instance?.ReloadLevel();
             }
 
-            if (deadTime == 0f && ChaosManager.IsDead) {
-                deadTime = Time.time + 5.0f;
-            }
+            if (!LevelManager.IsLoadingLevel) {
+                if (deadTime == 0f && ChaosManager.IsDead) {
+                    deadTime = Time.time + 5.0f;
+                }
 
-            if (!LevelManager.IsLoadingLevel && deadTime > 0.0f && deadTime - Time.unscaledTime <= 0.0f) {
-                deadTime = 0.0f;
-                LevelManager.Instance?.ReloadLevel();
+                if (deadTime > 0.0f && deadTime - Time.unscaledTime <= 0.0f) {
+                    deadTime = 0.0f;
+                    LevelManager.Instance?.ReloadLevel();
+                }
             }
         }
 
@@ -95,10 +97,6 @@ namespace LD49 {
         }
 
         public void FadeToBlack(Action doneCallback) {
-            Color color = fadeImage.color;
-            color.a = 1f;
-            fadeImage.color = color;
-
             fadeImage.DOKill();
             audioSource.Stop();
             audioSource.PlayOneShot(fadeClip);
@@ -107,10 +105,6 @@ namespace LD49 {
         }
 
         public void FadeFromBlack() {
-            Color color = fadeImage.color;
-            color.a = 0.25f;
-            fadeImage.color = color;
-
             audioSource.Stop();
             audioSource.PlayOneShot(fadeClip2);
             fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true).OnComplete(() => {
