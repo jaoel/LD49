@@ -762,8 +762,9 @@ GameObject:
   - component: {fileID: 3709422930422734285}
   - component: {fileID: 3709422930422734284}
   - component: {fileID: 3709422930422734280}
+  - component: {fileID: 6443753464443026680}
   m_Layer: 5
-  m_Name: InGameCanvas
+  m_Name: InGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -930,6 +931,19 @@ MonoBehaviour:
   objectiveGroup: {fileID: 3709422928643165042}
   chaosWrapper: {fileID: 4420094412377781669}
   clenchWrapper: {fileID: 166239830307436566}
+--- !u!114 &6443753464443026680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3709422930422734275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61b892477505b4428343372cd0dfc51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxChaos: 100
 --- !u!1 &3709422930488957654
 GameObject:
   m_ObjectHideFlags: 0

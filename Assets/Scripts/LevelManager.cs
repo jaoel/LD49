@@ -27,6 +27,8 @@ namespace LD49 {
         private Level currentLevel = null;
         private int currentLevelIndex = -1;
 
+        public static bool IsLoadingLevel => loadingLevel;
+
         private void Awake() {
             _instance = this;
         }

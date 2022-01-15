@@ -29,7 +29,7 @@ namespace LD49 {
         }
 
         public void AddChaos(float multiplier = 1f) {
-            GameManager.Instance.UpdateChaos((int)(score * multiplier));
+            ChaosManager.UpdateChaos((int)(score * multiplier));
         }
 
         private void Update() {

@@ -88,7 +88,7 @@ namespace LD49 {
 
         private void Update() {
             bool farted = false;
-            if (GameManager.Instance.IsDead) {
+            if (ChaosManager.IsDead) {
                 if (fartTimer - Time.time < 0.0f && (clenchTimer == 0.0f || clenchTimer >= maxClenchTimer)) {
                     Fart();
                 }
@@ -206,7 +206,7 @@ namespace LD49 {
                 float dist = Vector3.Distance(npc.transform.position, farticleSystem.transform.position);
                 if (dist < 2f) {
                     npc.SetRagdoll(farticleSystem.transform.position, 1000f);
-                    GameManager.Instance.UpdateChaos(50f);
+                    ChaosManager.UpdateChaos(50f);
                 }
             }
 

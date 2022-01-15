@@ -36,6 +36,10 @@ namespace LD49 {
         [SerializeField]
         private RectTransform clenchWrapper = null;
 
+        private float noiseTime = 0f;
+
+        private float clenchNoiseTime = 0f;
+
         private static UIManager _instance;
         public static UIManager Instance {
             get {
@@ -55,14 +59,8 @@ namespace LD49 {
             }
         }
 
-        private void Start() {
-            DontDestroyOnLoad(gameObject);
-        }
-
-        float noiseTime = 0f;
-        float clenchNoiseTime = 0f;
         private void Update() {
-            float chaos = GameManager.Instance.GetChaos();
+            float chaos = ChaosManager.GetChaos();
             noiseTime += Time.unscaledDeltaTime;
             float t = noiseTime * Mathf.Lerp(5f, 15f, chaos);
             Vector2 noise = new Vector2(1f - 2f * Mathf.PerlinNoise(t + 100f, t), Mathf.PerlinNoise(t * 1.2f, t + 200f)) * 35f;
