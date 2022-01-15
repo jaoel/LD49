@@ -12,14 +12,6 @@ namespace LD49 {
         }
 
         private static LevelManager _instance;
-        public static LevelManager Instance {
-            get {
-                if (_instance == null) {
-                    Debug.LogError("A LevelManager is required");
-                }
-                return _instance;
-            }
-        }
 
         [SerializeField]
         private LevelHolder levelHolder = null;
@@ -53,21 +45,23 @@ namespace LD49 {
             }
         }
 
-        public void Abort() {
-            if (IsLoadingLevel) {
+        public static void Abort() {
+            if (_instance != null && IsLoadingLevel) {
                 loadingLevel = false;
                 DOTween.KillAll();
             }
         }
 
-        public void RecordCurrentLevelWin() {
-            if (currentLevel != null) {
-                PlayerPrefs.SetInt($"level{currentLevelIndex}", 1);
+        public static void RecordCurrentLevelWin() {
+            if (_instance != null && _instance.currentLevel != null) {
+                PlayerPrefs.SetInt($"level{_instance.currentLevelIndex}", 1);
             }
         }
 
-        public void RequestNextLevel() {
-            requestedLevel = currentLevelIndex + 1;
+        public static void RequestNextLevel() {
+            if (_instance != null) {
+                requestedLevel = _instance.currentLevelIndex + 1;
+            }
         }
 
         private bool TryStartLoadLevel(int index) {
@@ -108,8 +102,10 @@ namespace LD49 {
             loadingLevel = false;
         }
 
-        public void ReloadLevel() {
-            TryStartLoadLevel(currentLevelIndex);
+        public static void ReloadLevel() {
+            if (_instance != null) {
+                _instance.TryStartLoadLevel(_instance.currentLevelIndex);
+            }
         }
     }
 }

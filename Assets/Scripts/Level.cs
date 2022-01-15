@@ -54,8 +54,8 @@ namespace LD49 {
 
             if (currentObjective >= playerTriggers.Count) {
                 GameManager.PlayFanfare();
-                LevelManager.Instance.RecordCurrentLevelWin();
-                LevelManager.Instance.RequestNextLevel();
+                LevelManager.RecordCurrentLevelWin();
+                LevelManager.RequestNextLevel();
                 //U WIN LMAO
             } else {
                 playerTriggers[currentObjective].PlayerEnter += OnPlayerTriggerEnd;

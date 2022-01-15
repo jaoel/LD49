@@ -47,7 +47,7 @@ namespace LD49 {
             }
 
             if (Input.GetKeyDown(KeyCode.Tab)) {
-                LevelManager.Instance?.ReloadLevel();
+                LevelManager.ReloadLevel();
             }
 
             if (!LevelManager.IsLoadingLevel) {
@@ -57,14 +57,14 @@ namespace LD49 {
 
                 if (deadTime > 0.0f && deadTime - Time.unscaledTime <= 0.0f) {
                     deadTime = 0.0f;
-                    LevelManager.Instance?.ReloadLevel();
+                    LevelManager.ReloadLevel();
                 }
             }
         }
 
         public static void LoadMainMenu() {
             if (_instance != null) {
-                LevelManager.Instance.Abort();
+                LevelManager.Abort();
                 FadeToBlack(() => {
                     SceneManager.LoadScene("Bootstrap");
                     FadeFromBlack();
