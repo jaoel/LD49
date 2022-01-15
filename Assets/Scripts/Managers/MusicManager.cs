@@ -62,7 +62,8 @@ namespace LD49 {
 
         public static void PlayMainMenuMusic() {
             if (_instance != null) {
-                PlayMusic(_instance.menuMusic);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/MainMenuTheme");
+                //PlayMusic(_instance.menuMusic);
             }
         }
 
