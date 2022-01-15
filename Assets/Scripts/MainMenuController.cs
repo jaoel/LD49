@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 
 namespace LD49 {
-    public class MainMenuManager : MonoBehaviour {
+    public class MainMenuController : MonoBehaviour {
 
         public GameObject mainObject;
         public GameObject levelSelectObject;

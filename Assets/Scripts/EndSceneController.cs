@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace LD49 {
-    public class EndSceneManager : MonoBehaviour {
+    public class EndSceneController : MonoBehaviour {
         public void LoadMainMenu() {
             GameManager.Instance.LoadMainMenu();
         }

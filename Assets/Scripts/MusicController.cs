@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace LD49 {
-    public class MusicManager : MonoBehaviour {
+    public class MusicController : MonoBehaviour {
         [SerializeField]
         private AudioClip menuMusic;
 
