@@ -90,8 +90,9 @@ namespace LD49 {
             if (_instance != null) {
                 OverlayManager.QueueFadeTransition(() => {
                     if (!IsGameScene) {
+                        DOTween.KillAll();
                         AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(SceneNames.GameScene);
-                        sceneLoadOperation.completed += (ao) => LevelManager.LoadLevel(levelID);
+                        sceneLoadOperation.completed += ao => LevelManager.LoadLevel(levelID);
                     } else {
                         LevelManager.LoadLevel(levelID);
                     }
@@ -100,7 +101,10 @@ namespace LD49 {
         }
 
         private void LoadScene(string sceneName, Action onComplete) {
-            OverlayManager.QueueFadeTransition(() => SceneManager.LoadScene(sceneName), onComplete);
+            OverlayManager.QueueFadeTransition(() => {
+                DOTween.KillAll();
+                SceneManager.LoadScene(sceneName);
+            }, onComplete);
         }
 
         public static void LoadMainMenu(Action onComplete = null) {

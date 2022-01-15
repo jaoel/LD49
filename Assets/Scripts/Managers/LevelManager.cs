@@ -20,9 +20,6 @@ namespace LD49 {
 
         private void Start() {
             currentLevel = FindObjectOfType<Level>();
-            if (currentLevel != null) {
-                currentLevelIndex = levelHolder.levelPrefabs.IndexOf(currentLevel);
-            }
             MusicManager.PlayGameMusic();
         }
 
@@ -67,6 +64,7 @@ namespace LD49 {
 
         private void LoadLevel(Level levelPrefab, int levelID) {
             if (currentLevel != null) {
+                DOTween.KillAll();
                 Destroy(currentLevel.gameObject);
             }
 
