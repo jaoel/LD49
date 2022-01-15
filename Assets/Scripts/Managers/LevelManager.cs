@@ -38,7 +38,7 @@ namespace LD49 {
             if (currentLevel != null) {
                 requestedLevel = -1;
             }
-            MusicController.PlayGameMusic();
+            MusicManager.PlayGameMusic();
         }
 
         private void Update() {

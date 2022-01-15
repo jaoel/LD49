@@ -17,7 +17,7 @@ namespace LD49 {
         }
 
         private void Start() {
-            MusicController.PlayMainMenuMusic();
+            MusicManager.PlayMainMenuMusic();
         }
 
         public void StartGame() {

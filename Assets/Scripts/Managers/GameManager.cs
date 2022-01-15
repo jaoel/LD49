@@ -79,7 +79,7 @@ namespace LD49 {
                     SceneManager.LoadScene("EndScene");
                     FadeFromBlack();
                     Destroy(UIManager.Instance.gameObject);
-                    MusicController.PlayMainMenuMusic();
+                    MusicManager.PlayMainMenuMusic();
                 });
             }
         }
