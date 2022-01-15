@@ -7,22 +7,24 @@ using System.Collections;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
-
-        [SerializeField]
-        private Image fadeImage = null;
+        public class SceneNames {
+            public static readonly string GameScene = "MainScene";
+            public static readonly string MainMenu = "Bootstrap";
+            public static readonly string EndScene = "EndScene";
+        };
 
         private static GameManager _instance;
 
-        public float deadTime = 0.0f;
+        private Coroutine respawnCoroutine = null;
 
         public AudioClip fanfareClip;
         public AudioClip hoverClip;
         public AudioClip clickClip;
-        public AudioClip fadeClip;
-        public AudioClip fadeClip2;
 
         public AudioSource audioSource;
         public AudioSource audioSourceUI;
+
+        public static bool IsGameScene => SceneManager.GetActiveScene().name == SceneNames.GameScene;
 
         private void Awake() {
             if (_instance == null) {
@@ -41,71 +43,29 @@ namespace LD49 {
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                if (SceneManager.GetActiveScene().name != "Bootstrap") {
+                if (SceneManager.GetActiveScene().name != SceneNames.MainMenu) {
+                    OverlayManager.ClearQueue();
                     LoadMainMenu();
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.Tab)) {
-                LevelManager.ReloadLevel();
+                OverlayManager.ClearQueue();
+                LevelManager.ReloadCurrentLevel();
             }
 
-            if (!LevelManager.IsLoadingLevel) {
-                if (deadTime == 0f && ChaosManager.IsDead) {
-                    deadTime = Time.time + 5.0f;
-                }
-
-                if (deadTime > 0.0f && deadTime - Time.unscaledTime <= 0.0f) {
-                    deadTime = 0.0f;
-                    LevelManager.ReloadLevel();
-                }
+            if (ChaosManager.IsDead && respawnCoroutine == null) {
+                respawnCoroutine = StartCoroutine(Respawn());
             }
         }
 
-        public static void LoadMainMenu() {
-            if (_instance != null) {
-                LevelManager.Abort();
-                FadeToBlack(() => {
-                    SceneManager.LoadScene("Bootstrap");
-                    FadeFromBlack();
-                });
-            }
-        }
-
-        public static void LoadEnd() {
-            if (_instance != null) {
-                FadeToBlack(() => {
-                    SceneManager.LoadScene("EndScene");
-                    FadeFromBlack();
-                    MusicManager.PlayMainMenuMusic();
-                });
-            }
+        private IEnumerator Respawn() {
+            yield return new WaitForSeconds(5f);
+            LevelManager.ReloadCurrentLevel(() => respawnCoroutine = null);
         }
 
         public static void ResetChaos() {
             ChaosManager.SetChaos(0f);
-        }
-
-        public static void FadeToBlack(Action doneCallback) {
-            if (_instance != null) {
-                _instance.fadeImage.DOKill();
-                _instance.audioSource.Stop();
-                _instance.audioSource.PlayOneShot(_instance.fadeClip);
-                _instance.fadeImage.enabled = true;
-                _instance.fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke()).SetUpdate(true);
-            }
-        }
-
-        public static void FadeFromBlack() {
-            if (_instance != null) {
-                _instance.audioSource.Stop();
-                _instance.audioSource.PlayOneShot(_instance.fadeClip2);
-                _instance.fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true).OnComplete(() => {
-                    if (_instance.fadeImage != null) {
-                        _instance.fadeImage.enabled = false;
-                    }
-                });
-            }
         }
 
         public static void PlayFanfare() {
@@ -123,6 +83,35 @@ namespace LD49 {
         public static void PlayUIClick() {
             if (_instance != null) {
                 _instance.audioSourceUI.PlayOneShot(_instance.clickClip, 0.5f);
+            }
+        }
+
+        public static void LoadGameAtLevel(int levelID) {
+            if (_instance != null) {
+                OverlayManager.QueueFadeTransition(() => {
+                    if (!IsGameScene) {
+                        AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(SceneNames.GameScene);
+                        sceneLoadOperation.completed += (ao) => LevelManager.LoadLevel(levelID);
+                    } else {
+                        LevelManager.LoadLevel(levelID);
+                    }
+                }, null);
+            }
+        }
+
+        private void LoadScene(string sceneName, Action onComplete) {
+            OverlayManager.QueueFadeTransition(() => SceneManager.LoadScene(sceneName), onComplete);
+        }
+
+        public static void LoadMainMenu(Action onComplete = null) {
+            if (_instance != null) {
+                _instance.LoadScene(SceneNames.MainMenu, onComplete);
+            }
+        }
+
+        public static void LoadEnd(Action onComplete = null) {
+            if (_instance != null) {
+                _instance.LoadScene(SceneNames.EndScene, onComplete);
             }
         }
     }

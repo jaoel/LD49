@@ -85,6 +85,15 @@ Shader "LD49/UIFade"
                 float _MaskSoftnessX;
                 float _MaskSoftnessY;
 
+                float invLerp(float from, float to, float value) {
+                    return (value - from) / (to - from);
+                }
+
+                float remap(float origFrom, float origTo, float targetFrom, float targetTo, float value) {
+                    float rel = invLerp(origFrom, origTo, value);
+                    return lerp(targetFrom, targetTo, rel);
+                }
+
                 v2f vert(appdata_t v)
                 {
                     v2f OUT;
@@ -110,7 +119,9 @@ Shader "LD49/UIFade"
                 {
                     half2 uv = IN.vertex.xy / IN.vertex.w / _ScreenParams.xy - 0.5;
                     uv.x *= _ScreenParams.x / _ScreenParams.y;
-                    half distance = sqrt(dot(uv, uv)) - (IN.color.a - 0.3) * (_ScreenParams.x / _ScreenParams.y);
+
+                    float alpha = remap(1, 0, 0, 0.7, IN.color.a);
+                    half distance = sqrt(dot(uv, uv)) - alpha * (_ScreenParams.x / _ScreenParams.y);
                     clip(distance);
 
                     half4 inColor = IN.color;

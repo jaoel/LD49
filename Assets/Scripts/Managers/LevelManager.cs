@@ -1,16 +1,11 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace LD49 {
     public class LevelManager : MonoBehaviour {
-        private static int requestedLevel = 0;
-        private static bool loadingLevel = false;
-        public static void RequestLevel(int level) {
-            requestedLevel = level;
-        }
-
         private static LevelManager _instance;
 
         [SerializeField]
@@ -19,8 +14,6 @@ namespace LD49 {
         private Level currentLevel = null;
         private int currentLevelIndex = -1;
 
-        public static bool IsLoadingLevel => loadingLevel;
-
         private void Awake() {
             _instance = this;
         }
@@ -28,83 +21,64 @@ namespace LD49 {
         private void Start() {
             currentLevel = FindObjectOfType<Level>();
             if (currentLevel != null) {
-                requestedLevel = -1;
+                currentLevelIndex = levelHolder.levelPrefabs.IndexOf(currentLevel);
             }
             MusicManager.PlayGameMusic();
         }
 
-        private void Update() {
-            if (requestedLevel != -1 && requestedLevel != currentLevelIndex) {
-                if (requestedLevel >= levelHolder.levelPrefabs.Count) {
+        private bool TryGetLevelPrefab(int levelID, out Level levelPrefab) {
+            if (levelID < 0 || levelID >= levelHolder.levelPrefabs.Count) {
+                Debug.LogError($"There is no level with index {levelID}");
+                levelPrefab = null;
+                return false;
+            }
+
+            levelPrefab = levelHolder.levelPrefabs[levelID];
+            if (levelPrefab == null) {
+                Debug.LogError($"Level with index {levelID} is null");
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void LoadLevel(int levelID) {
+            if (_instance && _instance.TryGetLevelPrefab(levelID, out Level levelPrefab)) {
+                _instance.LoadLevel(levelPrefab, levelID);
+            }
+        }
+
+        public static void LoadNextLevel(Action onComplete = null) {
+            if (_instance != null) {
+                int nextLevelIndex = _instance.currentLevelIndex + 1;
+                if (nextLevelIndex >= _instance.levelHolder.levelPrefabs.Count) {
                     GameManager.LoadEnd();
-                    requestedLevel = -1;
-                } else {
-                    TryStartLoadLevel(requestedLevel);
-                    requestedLevel = -1;
+                } else if (_instance.TryGetLevelPrefab(nextLevelIndex, out Level levelPrefab)) {
+                    OverlayManager.QueueFadeTransition(() => _instance.LoadLevel(levelPrefab, nextLevelIndex), onComplete);
                 }
             }
         }
 
-        public static void Abort() {
-            if (_instance != null && IsLoadingLevel) {
-                loadingLevel = false;
-                DOTween.KillAll();
+        public static void ReloadCurrentLevel(Action onComplete = null) {
+            if (_instance != null) {
+                OverlayManager.QueueFadeTransition(() => _instance.LoadLevel(_instance.currentLevel, _instance.currentLevelIndex), onComplete);
             }
+        }
+
+        private void LoadLevel(Level levelPrefab, int levelID) {
+            if (currentLevel != null) {
+                Destroy(currentLevel.gameObject);
+            }
+
+            Debug.Log($"Loading '{levelPrefab.name}' with id {levelID}");
+            currentLevel = Instantiate(levelPrefab);
+            currentLevelIndex = levelID;
+            GameManager.ResetChaos();
         }
 
         public static void RecordCurrentLevelWin() {
             if (_instance != null && _instance.currentLevel != null) {
                 PlayerPrefs.SetInt($"level{_instance.currentLevelIndex}", 1);
-            }
-        }
-
-        public static void RequestNextLevel() {
-            if (_instance != null) {
-                requestedLevel = _instance.currentLevelIndex + 1;
-            }
-        }
-
-        private bool TryStartLoadLevel(int index) {
-            if (loadingLevel) {
-                return false;
-            }
-
-            loadingLevel = true;
-            DOTween.KillAll();
-            if (index < 0 || index >= levelHolder.levelPrefabs.Count) {
-                Debug.LogError($"There is no level with index {index}");
-                return false;
-            }
-
-            Level levelPrefab = levelHolder.levelPrefabs[index];
-            if (levelPrefab == null) {
-                Debug.LogError($"Level with index {index} is null");
-                return false;
-            }
-
-            GameManager.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
-            return true;
-        }
-
-        private void LoadLevelActually(Level levelPrefab, int index) {
-
-            if (currentLevel != null) {
-                Destroy(currentLevel.gameObject);
-            }
-
-            Debug.Log($"Loading '{levelPrefab.name}' at index {index}");
-            currentLevel = Instantiate(levelPrefab);
-            currentLevelIndex = index;
-            GameManager.ResetChaos();
-
-            GameManager.FadeFromBlack();
-
-            loadingLevel = false;
-        }
-
-        public static void ReloadLevel() {
-            if (_instance != null) {
-                _instance.TryStartLoadLevel(_instance.currentLevelIndex);
             }
         }
     }

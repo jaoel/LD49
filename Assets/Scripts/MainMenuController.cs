@@ -52,11 +52,10 @@ namespace LD49 {
             }
         }
 
-        public void StartLevel(int index) {
+        public void StartLevel(int levelID) {
             if (!loading) {
-                LevelManager.RequestLevel(index);
-                GameManager.FadeToBlack(() => SceneManager.LoadScene("MainScene"));
                 loading = true;
+                GameManager.LoadGameAtLevel(levelID);
             }
         }
 
