@@ -51,14 +51,26 @@ namespace LD49 {
                 if (nextLevelIndex >= _instance.levelHolder.levelPrefabs.Count) {
                     GameManager.LoadEnd();
                 } else if (_instance.TryGetLevelPrefab(nextLevelIndex, out Level levelPrefab)) {
-                    OverlayManager.QueueFadeTransition(() => _instance.LoadLevel(levelPrefab, nextLevelIndex), onComplete);
+                    GameManager.playerInputAllowed = false;
+                    OverlayManager.QueueFadeTransition(
+                        () => _instance.LoadLevel(levelPrefab, nextLevelIndex),
+                        () => {
+                            onComplete?.Invoke();
+                            GameManager.playerInputAllowed = true;
+                        });
                 }
             }
         }
 
         public static void ReloadCurrentLevel(Action onComplete = null) {
             if (_instance != null) {
-                OverlayManager.QueueFadeTransition(() => _instance.LoadLevel(_instance.currentLevel, _instance.currentLevelIndex), onComplete);
+                GameManager.playerInputAllowed = false;
+                OverlayManager.QueueFadeTransition(
+                    () => LoadLevel(_instance.currentLevelIndex),
+                    () => {
+                        onComplete?.Invoke();
+                        GameManager.playerInputAllowed = true;
+                    });
             }
         }
 

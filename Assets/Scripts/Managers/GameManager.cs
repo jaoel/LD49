@@ -26,6 +26,9 @@ namespace LD49 {
 
         public static bool IsGameScene => SceneManager.GetActiveScene().name == SceneNames.GameScene;
 
+        // TODO: Add input manager
+        public static bool playerInputAllowed = false;
+
         private void Awake() {
             if (_instance == null) {
                 _instance = this;
@@ -96,7 +99,8 @@ namespace LD49 {
                     } else {
                         LevelManager.LoadLevel(levelID);
                     }
-                }, null);
+                },
+                () => playerInputAllowed = true);
             }
         }
 

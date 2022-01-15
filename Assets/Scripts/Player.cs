@@ -84,6 +84,7 @@ namespace LD49 {
             fartWarningRed.SetActive(false);
             fartWarningYellow.SetActive(false);
             SetFartTimer();
+            UIManager.UpdateClenchBar(0f);
         }
 
         private void Update() {
@@ -260,6 +261,10 @@ namespace LD49 {
         }
 
         private void Movement() {
+            if (!GameManager.playerInputAllowed) {
+                return;
+            }
+
             if (rigidbody.isKinematic) {
                 return;
             }
