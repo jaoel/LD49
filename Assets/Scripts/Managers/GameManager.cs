@@ -68,7 +68,6 @@ namespace LD49 {
                 FadeToBlack(() => {
                     SceneManager.LoadScene("Bootstrap");
                     FadeFromBlack();
-                    Destroy(UIManager.Instance.gameObject);
                 });
             }
         }
@@ -78,7 +77,6 @@ namespace LD49 {
                 FadeToBlack(() => {
                     SceneManager.LoadScene("EndScene");
                     FadeFromBlack();
-                    Destroy(UIManager.Instance.gameObject);
                     MusicManager.PlayMainMenuMusic();
                 });
             }

@@ -164,11 +164,11 @@ namespace LD49 {
         private void Clench() {
             if (Input.GetKey(KeyCode.Space) && !rigidbody.isKinematic) {
                 if (clenchTimer == 0.0f) {
-                    UIManager.Instance.ToggleClenchBar(true);
+                    UIManager.ToggleClenchBar(true);
                 }
 
                 clenchTimer += Time.deltaTime;
-                UIManager.Instance.UpdateClenchBar(Mathf.Clamp01(clenchTimer / maxClenchTimer));
+                UIManager.UpdateClenchBar(Mathf.Clamp01(clenchTimer / maxClenchTimer));
             }
 
             if (clenchTimer > 0.0f && Input.GetKeyUp(KeyCode.Space)) {
@@ -178,7 +178,7 @@ namespace LD49 {
                     Fart();
                 }
 
-                UIManager.Instance.ToggleClenchBar(false);
+                UIManager.ToggleClenchBar(false);
             }
         }
 
@@ -222,7 +222,7 @@ namespace LD49 {
 
             fartTimer = 0.0f;
             clenchTimer = 0f;
-            UIManager.Instance.ToggleClenchBar(false);
+            UIManager.ToggleClenchBar(false);
             fartWarningYellow.SetActive(false);
             fartWarningRed.SetActive(false);
 
@@ -318,7 +318,7 @@ namespace LD49 {
                         * (-transform.forward + Vector3.up) * Random.Range(10, 25), ForceMode.Impulse);
 
                     clenchTimer = 0f;
-                    UIManager.Instance.ToggleClenchBar(false);
+                    UIManager.ToggleClenchBar(false);
 
                     collision.rigidbody.AddExplosionForce(50.0f, collision.GetContact(0).point, 5.0f, 10.0f, ForceMode.Impulse);
                 }

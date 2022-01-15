@@ -49,7 +49,7 @@ namespace LD49 {
         public static void SetChaos(float value) {
             if (_instance != null) {
                 _instance.chaosScore = value;
-                UIManager.Instance?.UpdateChaos(Mathf.Clamp01(_instance.chaosScore / (float)_instance.maxChaos));
+                UIManager.UpdateChaos(Mathf.Clamp01(_instance.chaosScore / (float)_instance.maxChaos));
             }
         }
     }

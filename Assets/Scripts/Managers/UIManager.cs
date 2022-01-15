@@ -38,20 +38,12 @@ namespace LD49 {
         private float clenchNoiseTime = 0f;
 
         private static UIManager _instance;
-        public static UIManager Instance {
-            get {
-                if (_instance == null) {
-                    Debug.LogError("A UIManager is required");
-                }
-                return _instance;
-            }
-        }
 
         private void Awake() {
             if (_instance == null) {
                 _instance = this;
             } else {
-                Destroy(gameObject);
+                Destroy(this);
                 Debug.LogWarning("A duplicate UIManager was found");
             }
         }
@@ -70,33 +62,38 @@ namespace LD49 {
             clenchWrapper.localScale = Vector3.one * (1f + 0.01f * Mathf.Sin(Time.unscaledTime * 10f));
         }
 
-        public void ToggleClenchBar(bool on) {
-            if (on) {
-                clenchBar.DOFade(1.0f, 0.5f);
-                clenchBackground.DOFade(1.0f, 0.5f);
-                clenchText.DOFade(1.0f, 0.5f);
+        public static void ToggleClenchBar(bool on) {
+            if (_instance != null) {
+                if (on) {
+                    _instance.clenchBar.DOFade(1.0f, 0.5f);
+                    _instance.clenchBackground.DOFade(1.0f, 0.5f);
+                    _instance.clenchText.DOFade(1.0f, 0.5f);
+                } else {
+                    _instance.clenchBar.DOFade(0.0f, 0.5f);
+                    _instance.clenchBackground.DOFade(0.0f, 0.5f);
+                    _instance.clenchText.DOFade(0.0f, 0.5f);
+                }
             }
-            else {
-                clenchBar.DOFade(0.0f, 0.5f);
-                clenchBackground.DOFade(0.0f, 0.5f);
-                clenchText.DOFade(0.0f, 0.5f);
+        }
+
+        public static void UpdateClenchBar(float clenchValue) {
+            if (_instance != null) {
+                _instance.clenchBar.transform.localScale = new Vector3(clenchValue, 1.0f, 1.0f);
+                _instance.clenchBar.color = _instance.clenchGradient.Evaluate(clenchValue);
             }
         }
 
-        public void UpdateClenchBar(float clenchValue) {
-            clenchBar.transform.localScale = new Vector3(clenchValue, 1.0f, 1.0f);
-            clenchBar.color = clenchGradient.Evaluate(clenchValue);
+        public static void UpdateChaos(float chaosValue) {
+            if (_instance != null) {
+                _instance.chaosBar.transform.localScale = new Vector3(chaosValue, 1.0f, 1.0f);
+                _instance.chaosBar.color = _instance.chaosGradient.Evaluate(chaosValue);
+            }
         }
 
-        public void UpdateChaos(float chaosValue) {
-            chaosBar.transform.localScale = new Vector3(chaosValue, 1.0f, 1.0f);
-            chaosBar.color = chaosGradient.Evaluate(chaosValue);
-        }
-
-        public void ShowObjective(string text) {
-            objectiveText.text = text;
-
-            Sequence objSequence = DOTween.Sequence();
+        public static void ShowObjective(string text) {
+            if (_instance != null) {
+                _instance.objectiveText.text = text;
+            }
         }
     }
 }
