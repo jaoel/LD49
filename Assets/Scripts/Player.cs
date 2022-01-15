@@ -36,7 +36,7 @@ namespace LD49 {
         private GameObject armature = null;
 
         [SerializeField]
-        private CapsuleCollider collider = null;
+        private new CapsuleCollider collider = null;
 
         private Quaternion[] boneRotations = null;
 

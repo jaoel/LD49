@@ -9,10 +9,9 @@ namespace LD49 {
     public class GameManager : MonoBehaviour {
 
         [SerializeField]
-        private Image fadeImage;
+        private Image fadeImage = null;
 
         private static GameManager _instance;
-        private Tweener timeScale = null;
 
         public float deadTime = 0.0f;
 

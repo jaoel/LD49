@@ -12,7 +12,7 @@ namespace LD49 {
         }
 
         [SerializeField]
-        private AnimationType animation = AnimationType.IdleNormal;
+        private new AnimationType animation = AnimationType.IdleNormal;
 
         [SerializeField]
         private Animator animator;

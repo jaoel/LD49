@@ -22,7 +22,7 @@ namespace LD49 {
         }
 
         [SerializeField]
-        private LevelHolder levelHolder;
+        private LevelHolder levelHolder = null;
 
         private Level currentLevel = null;
         private int currentLevelIndex = -1;
