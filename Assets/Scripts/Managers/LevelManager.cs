@@ -38,13 +38,13 @@ namespace LD49 {
             if (currentLevel != null) {
                 requestedLevel = -1;
             }
-            GameManager.MusicManager.PlayGameMusic();
+            MusicController.PlayGameMusic();
         }
 
         private void Update() {
             if (requestedLevel != -1 && requestedLevel != currentLevelIndex) {
                 if (requestedLevel >= levelHolder.levelPrefabs.Count) {
-                    GameManager.Instance.LoadEnd();
+                    GameManager.LoadEnd();
                     requestedLevel = -1;
                 } else {
                     TryStartLoadLevel(requestedLevel);
@@ -88,7 +88,7 @@ namespace LD49 {
                 return false;
             }
 
-            GameManager.Instance.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
+            GameManager.FadeToBlack(() => LoadLevelActually(levelPrefab, index));
             return true;
         }
 
@@ -101,9 +101,9 @@ namespace LD49 {
             Debug.Log($"Loading '{levelPrefab.name}' at index {index}");
             currentLevel = Instantiate(levelPrefab);
             currentLevelIndex = index;
-            GameManager.Instance.ResetChaos();
+            GameManager.ResetChaos();
 
-            GameManager.Instance.FadeFromBlack();
+            GameManager.FadeFromBlack();
 
             loadingLevel = false;
         }

@@ -17,7 +17,7 @@ namespace LD49 {
         }
 
         private void Start() {
-            GameManager.MusicManager.PlayMainMenuMusic();
+            MusicController.PlayMainMenuMusic();
         }
 
         public void StartGame() {
@@ -55,7 +55,7 @@ namespace LD49 {
         public void StartLevel(int index) {
             if (!loading) {
                 LevelManager.RequestLevel(index);
-                GameManager.Instance.FadeToBlack(() => SceneManager.LoadScene("MainScene"));
+                GameManager.FadeToBlack(() => SceneManager.LoadScene("MainScene"));
                 loading = true;
             }
         }

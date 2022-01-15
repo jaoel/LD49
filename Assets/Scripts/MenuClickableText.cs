@@ -16,7 +16,7 @@ namespace LD49 {
 
         private void OnMouseOver() {
             if (!over) {
-                GameManager.Instance.PlayUIHover();
+                GameManager.PlayUIHover();
                 jumpAnim = 0f;
             }
             over = true;
@@ -27,7 +27,7 @@ namespace LD49 {
         }
 
         private void OnMouseUpAsButton() {
-            GameManager.Instance.PlayUIClick();
+            GameManager.PlayUIClick();
             Clicked?.Invoke();
         }
 

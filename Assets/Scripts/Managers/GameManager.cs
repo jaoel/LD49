@@ -24,24 +24,12 @@ namespace LD49 {
         public AudioSource audioSource;
         public AudioSource audioSourceUI;
 
-        public static GameManager Instance {
-            get {
-                if (_instance == null) {
-                    Debug.LogError("A GameManager is required");
-                }
-                return _instance;
-            }
-        }
-
-        public static MusicController MusicManager => Instance.musicManager;
-
-        [SerializeField]
-        private MusicController musicManager;
-
         private void Awake() {
             if (_instance == null) {
                 _instance = this;
             } else {
+                // We delete 'gameObject' here, and not 'this', because GameManager should be the root object
+                // and container for multiple other managers
                 Destroy(gameObject);
                 Debug.LogWarning("A duplicate GameManager was found");
             }
@@ -74,56 +62,70 @@ namespace LD49 {
             }
         }
 
-        public void LoadMainMenu() {
-            LevelManager.Instance.Abort();
-            FadeToBlack(() => {
-                SceneManager.LoadScene("Bootstrap");
-                FadeFromBlack();
-                Destroy(UIManager.Instance.gameObject);
-            });
+        public static void LoadMainMenu() {
+            if (_instance != null) {
+                LevelManager.Instance.Abort();
+                FadeToBlack(() => {
+                    SceneManager.LoadScene("Bootstrap");
+                    FadeFromBlack();
+                    Destroy(UIManager.Instance.gameObject);
+                });
+            }
         }
 
-        public void LoadEnd() {
-            FadeToBlack(() => {
-                SceneManager.LoadScene("EndScene");
-                FadeFromBlack();
-                Destroy(UIManager.Instance.gameObject);
-                MusicManager.PlayMainMenuMusic();
-            });
+        public static void LoadEnd() {
+            if (_instance != null) {
+                FadeToBlack(() => {
+                    SceneManager.LoadScene("EndScene");
+                    FadeFromBlack();
+                    Destroy(UIManager.Instance.gameObject);
+                    MusicController.PlayMainMenuMusic();
+                });
+            }
         }
 
-        public void ResetChaos() {
+        public static void ResetChaos() {
             ChaosManager.SetChaos(0f);
         }
 
-        public void FadeToBlack(Action doneCallback) {
-            fadeImage.DOKill();
-            audioSource.Stop();
-            audioSource.PlayOneShot(fadeClip);
-            fadeImage.enabled = true;
-            fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke()).SetUpdate(true);
+        public static void FadeToBlack(Action doneCallback) {
+            if (_instance != null) {
+                _instance.fadeImage.DOKill();
+                _instance.audioSource.Stop();
+                _instance.audioSource.PlayOneShot(_instance.fadeClip);
+                _instance.fadeImage.enabled = true;
+                _instance.fadeImage.DOColor(new Color(0f, 0f, 0f, 0.25f), 1.5f).SetEase(Ease.InOutCubic).OnComplete(() => doneCallback?.Invoke()).SetUpdate(true);
+            }
         }
 
-        public void FadeFromBlack() {
-            audioSource.Stop();
-            audioSource.PlayOneShot(fadeClip2);
-            fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true).OnComplete(() => {
-                if (fadeImage != null) {
-                    fadeImage.enabled = false;
-                }
-            });
+        public static void FadeFromBlack() {
+            if (_instance != null) {
+                _instance.audioSource.Stop();
+                _instance.audioSource.PlayOneShot(_instance.fadeClip2);
+                _instance.fadeImage.DOColor(new Color(0f, 0f, 0f, 1f), 1.5f).SetEase(Ease.InOutCubic).SetUpdate(true).OnComplete(() => {
+                    if (_instance.fadeImage != null) {
+                        _instance.fadeImage.enabled = false;
+                    }
+                });
+            }
         }
 
-        public void PlayFanfare() {
-            audioSourceUI.PlayOneShot(fanfareClip, 0.5f);
+        public static void PlayFanfare() {
+            if (_instance != null) {
+                _instance.audioSourceUI.PlayOneShot(_instance.fanfareClip, 0.5f);
+            }
         }
 
-        public void PlayUIHover() {
-            audioSourceUI.PlayOneShot(hoverClip, 0.5f);
+        public static void PlayUIHover() {
+            if (_instance != null) {
+                _instance.audioSourceUI.PlayOneShot(_instance.hoverClip, 0.5f);
+            }
         }
 
-        public void PlayUIClick() {
-            audioSourceUI.PlayOneShot(clickClip, 0.5f);
+        public static void PlayUIClick() {
+            if (_instance != null) {
+                _instance.audioSourceUI.PlayOneShot(_instance.clickClip, 0.5f);
+            }
         }
     }
 }

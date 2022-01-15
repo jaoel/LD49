@@ -2,6 +2,8 @@
 
 namespace LD49 {
     public class MusicController : MonoBehaviour {
+        private static MusicController _instance;
+
         [SerializeField]
         private AudioClip menuMusic;
 
@@ -13,6 +15,15 @@ namespace LD49 {
 
         private AudioClip currentClip;
         private AudioClip queuedClip;
+
+        private void Awake() {
+            if (_instance == null) {
+                _instance = this;
+            } else {
+                Destroy(this);
+                Debug.LogWarning("A duplicate MusicController was found");
+            }
+        }
 
         private void QueueMusic(AudioClip clip) {
             if (currentClip != clip) {
@@ -43,12 +54,22 @@ namespace LD49 {
             }
         }
 
-        public void PlayMainMenuMusic() {
-            QueueMusic(menuMusic);
+        public static void PlayMusic(AudioClip audioClip) {
+            if (_instance != null && audioClip != null) {
+                _instance.QueueMusic(audioClip);
+            }
         }
 
-        public void PlayGameMusic() {
-            QueueMusic(gameMusic);
+        public static void PlayMainMenuMusic() {
+            if (_instance != null) {
+                PlayMusic(_instance.menuMusic);
+            }
+        }
+
+        public static void PlayGameMusic() {
+            if (_instance != null) {
+                PlayMusic(_instance.gameMusic);
+            }
         }
     }
 }
