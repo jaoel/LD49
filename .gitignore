@@ -96,8 +96,8 @@ fmod_editor.log
 /Assets/FMODStudioCache.meta
 
 # FMOD
-FModStudio/RestroomRampage/.cache/
-FModStudio/RestroomRampage/.user/
-FModStudio/RestroomRampage/.unsaved/
+FModStudio/.cache/
+FModStudio/.user/
+FModStudio/.unsaved/
 fmod.log
 fmod_editor.log
