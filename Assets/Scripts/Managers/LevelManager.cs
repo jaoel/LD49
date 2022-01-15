@@ -53,6 +53,13 @@ namespace LD49 {
             }
         }
 
+        public void Abort() {
+            if (IsLoadingLevel) {
+                loadingLevel = false;
+                DOTween.KillAll();
+            }
+        }
+
         public void RecordCurrentLevelWin() {
             if (currentLevel != null) {
                 PlayerPrefs.SetInt($"level{currentLevelIndex}", 1);

@@ -75,6 +75,7 @@ namespace LD49 {
         }
 
         public void LoadMainMenu() {
+            LevelManager.Instance.Abort();
             FadeToBlack(() => {
                 SceneManager.LoadScene("Bootstrap");
                 FadeFromBlack();
