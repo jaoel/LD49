@@ -16,10 +16,15 @@ namespace LD49 {
 
         private static GameManager _instance;
         private Coroutine respawnCoroutine = null;
+
+        public FarticleSystem activeFarticleSystemPrefab;
+
+        public static FarticleSystem ActiveFarticleSystemPrefab => _instance == null ? null : _instance.activeFarticleSystemPrefab;
+
         public static bool IsGameScene => SceneManager.GetActiveScene().name == SceneNames.GameScene;
 
         // TODO: Add input manager
-        public static bool playerInputAllowed = false;
+        public static bool playerInputAllowed = true;
 
         private void Awake() {
             if (_instance == null) {

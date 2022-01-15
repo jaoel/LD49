@@ -62,6 +62,10 @@ namespace LD49 {
         private float warningWobbleTime = 0f;
         private bool hasMoved = false;
 
+#if UNITY_EDITOR
+        private bool unfarting = true;
+#endif
+
         private void Awake() {
             boneRotations = armature.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
             foreach (Rigidbody rb in armature.GetComponentsInChildren<Rigidbody>()) {
@@ -102,6 +106,17 @@ namespace LD49 {
             if (Input.GetKeyDown(KeyCode.Backspace)) {
                 ToggleRagdoll();
             }
+
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.P)) {
+                unfarting = !unfarting;
+                Debug.Log($"Unfarting is now {unfarting}");
+            }
+            if (unfarting) {
+                fartTimer = 0f;
+            }
+#endif
+
             if (fartTimer > 0) {
 
                 if (FartImminent()) {
