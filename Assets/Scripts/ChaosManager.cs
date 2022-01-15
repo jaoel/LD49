@@ -17,15 +17,6 @@ namespace LD49 {
 
         private static ChaosManager _instance;
 
-        public static ChaosManager Instance {
-            get {
-                if (_instance == null) {
-                    Debug.LogError("A ChaosManager is required");
-                }
-                return _instance;
-            }
-        }
-
         private void Awake() {
             if (_instance == null) {
                 _instance = this;
