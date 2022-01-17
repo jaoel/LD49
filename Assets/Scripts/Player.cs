@@ -227,8 +227,9 @@ namespace LD49 {
             fartWarningYellow.SetActive(false);
             fartWarningRed.SetActive(false);
 
-            audioSource.clip = fartSounds[Random.Range(0, fartSounds.Count)];
-            audioSource.Play();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Fart_Default");
+            //audioSource.clip = fartSounds[Random.Range(0, fartSounds.Count)];
+            //audioSource.Play();
             //SetFartTimer();
         }
 

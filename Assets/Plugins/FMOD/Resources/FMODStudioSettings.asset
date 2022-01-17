@@ -437,6 +437,8 @@ MonoBehaviour:
   - Master.assets
   - Music
   - Music.assets
+  - SFX
+  - SFX.assets
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
