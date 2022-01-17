@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using FMOD.Studio;
 
 namespace LD49 {
     public class MusicManager : MonoBehaviour {
@@ -13,8 +14,14 @@ namespace LD49 {
         [SerializeField]
         private AudioSource musicAudioSource;
 
+        private FMOD.Studio.EventInstance musicInstance;
+
         private AudioClip currentClip;
         private AudioClip queuedClip;
+
+        private string currentEvent;
+        private string queuedEvent;
+        private EventInstance eventInstance;
 
         private void Awake() {
             if (_instance == null) {
@@ -25,51 +32,63 @@ namespace LD49 {
             }
         }
 
-        private void QueueMusic(AudioClip clip) {
-            if (currentClip != clip) {
-                queuedClip = clip;
+        private void QueueMusic(string fmodEvent) {
+            if (currentEvent != fmodEvent) {
+                queuedEvent = fmodEvent;
             }
         }
 
         private void Update() {
-            if (queuedClip != null && queuedClip != currentClip) {
-                if (musicAudioSource.clip == null) {
-                    musicAudioSource.volume = 1f;
-                    musicAudioSource.clip = queuedClip;
-                    currentClip = queuedClip;
-                    queuedClip = null;
-                    musicAudioSource.Play();
+            if (!string.IsNullOrEmpty(queuedEvent) && queuedEvent != currentEvent) {
+                if (!eventInstance.hasHandle()) {
+                    currentEvent = queuedEvent;
+                    queuedEvent = null;
+
+                    eventInstance = FMODUnity.RuntimeManager.CreateInstance(currentEvent);
+                    eventInstance.setVolume(1f);
+                    eventInstance.start();
                 } else {
-                    musicAudioSource.volume = Mathf.MoveTowards(musicAudioSource.volume, 0f, Time.deltaTime * 2f);
-                    if (musicAudioSource.volume <= 0f) {
-                        currentClip = queuedClip;
-                        musicAudioSource.clip = queuedClip;
-                        //musicAudioSource.volume = 1f;
-                        musicAudioSource.Play();
-                        queuedClip = null;
+                    eventInstance.getVolume(out float volume);
+
+                    volume = Mathf.MoveTowards(volume, 0f, Time.deltaTime * 2f);
+                    eventInstance.setVolume(volume);
+
+                    if (volume <= 0f) {
+                        currentEvent = queuedEvent;
+                        queuedEvent = null;
+
+                        eventInstance.release();
+
+                        eventInstance = FMODUnity.RuntimeManager.CreateInstance(currentEvent);
+                        eventInstance.start();
                     }
                 }
-            } else if (musicAudioSource.volume < 1f) {
-                musicAudioSource.volume = Mathf.MoveTowards(musicAudioSource.volume, 1f, Time.deltaTime * 10f);
+
+            } else if (eventInstance.hasHandle()) {
+                eventInstance.getVolume(out float volume);
+
+                if (volume < 1f) {
+                    volume = Mathf.MoveTowards(volume, 1f, Time.deltaTime * 10f);
+                    eventInstance.setVolume(volume);
+                }
             }
         }
 
-        public static void PlayMusic(AudioClip audioClip) {
-            if (_instance != null && audioClip != null) {
-                _instance.QueueMusic(audioClip);
+        public static void PlayMusic(string fmodEvent) {
+            if (_instance != null && !string.IsNullOrEmpty(fmodEvent)) {
+                _instance.QueueMusic(fmodEvent);
             }
         }
 
         public static void PlayMainMenuMusic() {
             if (_instance != null) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/MainMenuTheme");
-                //PlayMusic(_instance.menuMusic);
+                PlayMusic("event:/MainMenuTheme");
             }
         }
 
         public static void PlayGameMusic() {
             if (_instance != null) {
-                PlayMusic(_instance.gameMusic);
+                PlayMusic("event:/LevelTheme");
             }
         }
     }
