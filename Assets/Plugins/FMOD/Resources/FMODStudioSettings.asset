@@ -409,7 +409,7 @@ MonoBehaviour:
   HasSourceProject: 0
   HasPlatforms: 1
   sourceProjectPath: FModStudio/RestroomRampage.fspro
-  sourceBankPath: Assets/Audio/
+  sourceBankPath: Assets/Audio
   SourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 0
