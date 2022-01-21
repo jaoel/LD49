@@ -103,3 +103,5 @@ fmod.log
 fmod_editor.log
 .fake
 .ionide
+
+.vscode/*
