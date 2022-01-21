@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{b8bc4c0d-d33d-4cec-b824-9b38a23a9f82}">
+		<property name="assetPath">
+			<value>SFX/pain3.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>22.0499992</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.35977324263038551</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{d487adfd-6f21-45a7-b46a-64479a876735}</destination>
+		</relationship>
+	</object>
+</objects>

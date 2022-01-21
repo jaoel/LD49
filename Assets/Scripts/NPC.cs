@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 namespace LD49 {
     public class NPC : MonoBehaviour {
@@ -16,20 +17,13 @@ namespace LD49 {
 
         [SerializeField]
         private Animator animator;
-
-        [SerializeField]
-        private List<AudioClip> screams = null;
-
         public Collider playerCollider;
 
         private AnimationType currentAnimation;
-        private AudioSource audioSource = null;
 
         public Transform spineBone;
 
         private void Awake() {
-
-            audioSource = GetComponent<AudioSource>();
             foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>()) {
                 rb.isKinematic = true;
             }
@@ -64,9 +58,7 @@ namespace LD49 {
 
             if (Time.time - lastClipPlayTime > 1f) {
                 lastClipPlayTime = Time.time;
-                audioSource.clip = screams[UnityEngine.Random.Range(0, screams.Count)];
-                audioSource.volume = 0.25f;
-                audioSource.Play();
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Scream");
             }
 
             animator.enabled = false;

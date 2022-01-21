@@ -4,21 +4,7 @@ using FMOD.Studio;
 namespace LD49 {
     public class MusicManager : MonoBehaviour {
         private static MusicManager _instance;
-
-        [SerializeField]
-        private AudioClip menuMusic;
-
-        [SerializeField]
-        private AudioClip gameMusic;
-
-        [SerializeField]
-        private AudioSource musicAudioSource;
-
         private FMOD.Studio.EventInstance musicInstance;
-
-        private AudioClip currentClip;
-        private AudioClip queuedClip;
-
         private string currentEvent;
         private string queuedEvent;
         private EventInstance eventInstance;

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
@@ -14,16 +15,7 @@ namespace LD49 {
         };
 
         private static GameManager _instance;
-
         private Coroutine respawnCoroutine = null;
-
-        public AudioClip fanfareClip;
-        public AudioClip hoverClip;
-        public AudioClip clickClip;
-
-        public AudioSource audioSource;
-        public AudioSource audioSourceUI;
-
         public static bool IsGameScene => SceneManager.GetActiveScene().name == SceneNames.GameScene;
 
         // TODO: Add input manager
@@ -73,19 +65,19 @@ namespace LD49 {
 
         public static void PlayFanfare() {
             if (_instance != null) {
-                _instance.audioSourceUI.PlayOneShot(_instance.fanfareClip, 0.5f);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/LevelEndFanfare");
             }
         }
 
         public static void PlayUIHover() {
             if (_instance != null) {
-                _instance.audioSourceUI.PlayOneShot(_instance.hoverClip, 0.5f);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/ButtonHover");
             }
         }
 
         public static void PlayUIClick() {
             if (_instance != null) {
-                _instance.audioSourceUI.PlayOneShot(_instance.clickClip, 0.5f);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/ButtonClick");
             }
         }
 

@@ -20,14 +20,7 @@ namespace LD49 {
 
         [SerializeField]
         private Image fadeImage = null;
-
-        public AudioClip fadeClip;
-        public AudioClip fadeClip2;
-
-        public AudioSource audioSource;
-
         private Coroutine fadeTransitionCoroutine = null;
-
         private Queue<Transition> transitionQueue = new Queue<Transition>();
 
         private void Awake() {
@@ -77,10 +70,9 @@ namespace LD49 {
             float GetT(float doneTime, float duration) {
                 return Mathf.Clamp01((doneTime - Time.unscaledTime) / duration);
             }
-
             // Fade out
             if (transition.fadeOutDuration > 0f) {
-                audioSource.PlayOneShot(_instance.fadeClip);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SwooshOne");
                 float fadeOutDoneTime = Time.unscaledTime + transition.fadeOutDuration;
                 while (Time.unscaledTime < fadeOutDoneTime) {
                     float t = GetT(fadeOutDoneTime, transition.fadeOutDuration);
@@ -95,7 +87,7 @@ namespace LD49 {
 
             // Fade in
             if (transition.fadeInDuration > 0f) {
-                audioSource.PlayOneShot(_instance.fadeClip2);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SwooshTwo");
                 float fadeInDoneTime = Time.unscaledTime + transition.fadeInDuration;
                 while (Time.unscaledTime < fadeInDoneTime) {
                     float t = GetT(fadeInDoneTime, transition.fadeInDuration);

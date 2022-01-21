@@ -101,3 +101,5 @@ FModStudio/.user/
 FModStudio/.unsaved/
 fmod.log
 fmod_editor.log
+.fake
+.ionide

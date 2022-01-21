@@ -1,19 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using FMOD;
+using FMODUnity;
 
 namespace LD49 {
     public class Prop : MonoBehaviour {
         public float score = 1f;
 
         private Rigidbody rigidBody = null;
-        private AudioSource audioSource = null;
-
-        [SerializeField]
-        private List<AudioClip> clips = null;
 
         private void Awake() {
             rigidBody = GetComponent<Rigidbody>();
-            audioSource = GetComponent<AudioSource>();
         }
 
         private float cooldownTime = 0f;
@@ -22,9 +19,7 @@ namespace LD49 {
             if (collision.relativeVelocity.magnitude >= 2.0f && cooldownTime - Time.time < 0f) {
                 AddChaos();
                 cooldownTime = Time.time + 2f;
-
-                audioSource.clip = clips[Random.Range(0, clips.Count)];
-                audioSource.Play();
+                FMODUnity.RuntimeManager.PlayOneShot("event:/PropCollisionDefault");
             }
         }
 
