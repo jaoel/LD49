@@ -19,7 +19,7 @@ namespace LD49 {
             if (collision.relativeVelocity.magnitude >= 2.0f && cooldownTime - Time.time < 0f) {
                 AddChaos();
                 cooldownTime = Time.time + 2f;
-                FMODUnity.RuntimeManager.PlayOneShot("event:/PropCollisionDefault");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/PropCollisionDefault", transform.position);
             }
         }
 
