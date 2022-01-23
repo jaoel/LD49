@@ -189,9 +189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeImage: {fileID: 1207032094855968354}
-  fadeClip: {fileID: 8300000, guid: 477a73d027a10b948b059d2e6c7e9c9c, type: 3}
-  fadeClip2: {fileID: 8300000, guid: a740fe74d2330634badbac865d895d9a, type: 3}
-  audioSource: {fileID: 0}
 --- !u!1 &5206922910228643583
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,3 +277,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c14c76b6941034595ef317c0f5bb2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeFarticleSystemPrefab: {fileID: 1091671811769931358, guid: 0d752557cabe39e49b89f72d591a4bf2, type: 3}
