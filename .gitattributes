@@ -127,3 +127,6 @@
 *.gz lfs
 *.rar lfs
 *.tar lfs
+
+# FMOD
+/Assets/Plugins/FMOD/platforms/mac/lib/* text eol=lf
