@@ -8,9 +8,11 @@ namespace LD49 {
         class JointInfo {
             public Transform source;
             public ConfigurableJoint joint;
+            public Vector3 initialPosition;
             public Quaternion initialRotation;
             public JointDrive initialAngularXDrive;
             public JointDrive initialAngularYZDrive;
+            public int stuckFrames = 0;
         }
 
         public Animator animator;
@@ -66,6 +68,7 @@ namespace LD49 {
                 jointInfos[i] = new JointInfo() {
                     source = sourceRoot.FindRecursive(joint.name),
                     joint = joint,
+                    initialPosition = joint.transform.localPosition,
                     initialRotation = joint.transform.localRotation,
                     initialAngularXDrive = joint.angularXDrive,
                     initialAngularYZDrive = joint.angularYZDrive,
@@ -114,6 +117,7 @@ namespace LD49 {
         private void FixedUpdate() {
             if (!isRagdoll) {
                 foreach (var jointInfo in jointInfos) {
+                    AntiStuck(jointInfo);
                     jointInfo.joint.SetTargetRotationLocal(jointInfo.source.localRotation, jointInfo.initialRotation);
                 }
 
@@ -138,6 +142,18 @@ namespace LD49 {
                 avgSpeed = Mathf.Lerp(avgSpeed, spine1.velocity.magnitude, 0.1f);
 
                 animator.speed = Mathf.Min(0.5f + avgSpeed * 0.5f, 2f);
+            }
+        }
+
+        private static void AntiStuck(JointInfo jointInfo) {
+            // Teleport joint if it is too far from it's parent
+            if (Vector3.Distance(jointInfo.joint.transform.localPosition, jointInfo.initialPosition) > 0.1f) {
+                jointInfo.stuckFrames++;
+            } else {
+                jointInfo.stuckFrames = 0;
+            }
+            if (jointInfo.stuckFrames > 10) {
+                jointInfo.joint.transform.localPosition = jointInfo.initialPosition;
             }
         }
 
