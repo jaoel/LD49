@@ -58,7 +58,7 @@ namespace LD49 {
 
             if (Time.time - lastClipPlayTime > 1f) {
                 lastClipPlayTime = Time.time;
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Scream");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/People/Scream");
             }
 
             animator.enabled = false;

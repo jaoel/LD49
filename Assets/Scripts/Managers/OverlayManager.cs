@@ -72,7 +72,7 @@ namespace LD49 {
             }
             // Fade out
             if (transition.fadeOutDuration > 0f) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SwooshOne");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Effects/SwooshOne");
                 float fadeOutDoneTime = Time.unscaledTime + transition.fadeOutDuration;
                 while (Time.unscaledTime < fadeOutDoneTime) {
                     float t = GetT(fadeOutDoneTime, transition.fadeOutDuration);
@@ -87,7 +87,7 @@ namespace LD49 {
 
             // Fade in
             if (transition.fadeInDuration > 0f) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SwooshTwo");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Effects/SwooshTwo");
                 float fadeInDoneTime = Time.unscaledTime + transition.fadeInDuration;
                 while (Time.unscaledTime < fadeInDoneTime) {
                     float t = GetT(fadeInDoneTime, transition.fadeInDuration);

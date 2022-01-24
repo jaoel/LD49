@@ -70,19 +70,19 @@ namespace LD49 {
 
         public static void PlayFanfare() {
             if (_instance != null) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/LevelEndFanfare");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Effects/LevelEndFanfare");
             }
         }
 
         public static void PlayUIHover() {
             if (_instance != null) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/ButtonHover");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/UI/ButtonHover");
             }
         }
 
         public static void PlayUIClick() {
             if (_instance != null) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/ButtonClick");
+                FMODUnity.RuntimeManager.PlayOneShot("event:/UI/ButtonClick");
             }
         }
 

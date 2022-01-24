@@ -235,7 +235,7 @@ namespace LD49 {
             fartWarningYellow.SetActive(false);
             fartWarningRed.SetActive(false);
 
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Fart_Default");
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Farts/Fart_Default");
         }
 
         private void ToggleRagdoll() {

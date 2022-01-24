@@ -68,13 +68,13 @@ namespace LD49 {
 
         public static void PlayMainMenuMusic() {
             if (_instance != null) {
-                PlayMusic("event:/MainMenuTheme");
+                PlayMusic("event:/Music/MainMenuTheme");
             }
         }
 
         public static void PlayGameMusic() {
             if (_instance != null) {
-                PlayMusic("event:/LevelTheme");
+                PlayMusic("event:/Music/LevelTheme");
             }
         }
     }
