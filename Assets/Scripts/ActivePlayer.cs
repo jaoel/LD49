@@ -30,21 +30,24 @@ namespace LD49 {
         public float acceleration = 15f;
         public float deceleration = 10f;
 
-        [SerializeField]
-        private float minFartForce = 50.0f;
-
-        [SerializeField]
-        private float maxFartForce = 100.0f;
-
         private Rigidbody[] rigidbodies = new Rigidbody[0];
         private JointInfo[] jointInfos = new JointInfo[0];
 
         private float avgSpeed = 0f;
         private Vector3 targetForward;
         private float runSpeed = 0f;
-        private bool isRagdoll = false;
         private FarticleSystem farticleSystem;
         private float clenchAmount = 0f;
+
+
+        [SerializeField, Tooltip("The amount of time in seconds while ragdolling (and stationary) until ragdolling can stop.")]
+        private float ragdollDuration = 1f;
+        private float ragdollStartTime = 0f;
+
+        public bool IsRagdoll { get; private set; } = false;
+        public bool IsRagdollBecauseFart { get; private set; } = false;
+        public bool HasMovedSinceSpawn { get; private set; } = false;
+        public bool IsStationary => avgSpeed <= 0.2f;
 
         private void Awake() {
             rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -88,15 +91,10 @@ namespace LD49 {
         }
 
         private void Update() {
-            Camera mainCamera = Camera.main;
-            Vector3 inputVector =
-                mainCamera.transform.right * Input.GetAxisRaw("Horizontal") +
-                mainCamera.transform.forward * Input.GetAxisRaw("Vertical");
+            Vector3 inputVector = GetInputVector();
 
             if (inputVector.magnitude > 0.1f) {
-
-                inputVector.y = 0f;
-                inputVector.Normalize();
+                HasMovedSinceSpawn = true;
 
                 targetForward = Vector3.RotateTowards(targetForward, inputVector, Mathf.PI * Time.deltaTime, 0f);
                 runSpeed = Mathf.MoveTowards(runSpeed, 1f, acceleration * Time.deltaTime);
@@ -105,17 +103,14 @@ namespace LD49 {
             }
             animator.SetFloat("RunSpeed", runSpeed);
 
-            if (Input.GetKeyDown(KeyCode.P)) {
-                SetRagdoll(!isRagdoll);
-            }
 
-            if (Input.GetKeyDown(KeyCode.F)) {
-                Fart();
+            if (IsRagdoll && Time.time >= ragdollStartTime + ragdollDuration && IsStationary && !ChaosManager.IsDead) {
+                SetRagdoll(false);
             }
         }
 
         private void FixedUpdate() {
-            if (!isRagdoll) {
+            if (!IsRagdoll) {
                 foreach (var jointInfo in jointInfos) {
                     AntiStuck(jointInfo);
                     jointInfo.joint.SetTargetRotationLocal(jointInfo.source.localRotation, jointInfo.initialRotation);
@@ -127,22 +122,51 @@ namespace LD49 {
                 spine1.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
                 spine2.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
 
-                spine1.AddTorque(Vector3.Cross(spine1.transform.forward, targetForward) * forwardTorque);
+                Vector3 flatForward = spine1.transform.forward;
+                flatForward.y = 0f;
+                flatForward.Normalize();
 
-                Vector3 targetVelocity = targetForward * forwardSpeed * runSpeed;
+                Vector3 flatTargetForward = targetForward;
+                flatTargetForward.y = 0f;
+                flatTargetForward.Normalize();
+
+                Vector3 torqueToApply = Vector3.Cross(flatForward, flatTargetForward);
+
+                // Apply more torque if the current angular velocity is in the opposite direction of where we want to turn
+                // to avoid the spring effect
+                float torqueDirection = Vector3.Dot(spine1.angularVelocity, torqueToApply);
+                if (torqueDirection < 0f) {
+                    torqueToApply *= Mathf.Abs(torqueDirection) * 2.5f;
+                }
+
+                spine1.AddTorque(torqueToApply * forwardTorque);
+
+                Vector3 targetVelocity = flatTargetForward * forwardSpeed * runSpeed;
                 Vector3 appliedVelocity = targetVelocity - spine1.velocity;
 
-                Debug.DrawLine(spine1.position, spine1.position + targetVelocity, Color.blue);
-                Debug.DrawLine(spine1.position, spine1.position + appliedVelocity, Color.magenta);
-
-                spine1.AddForce(appliedVelocity * Mathf.Max(0f, Vector3.Dot(spine1.transform.forward, targetForward)), ForceMode.VelocityChange);
-
-                Debug.DrawLine(spine1.position, spine1.position + spine1.velocity, Color.green);
-
-                avgSpeed = Mathf.Lerp(avgSpeed, spine1.velocity.magnitude, 0.1f);
-
-                animator.speed = Mathf.Min(0.5f + avgSpeed * 0.5f, 2f);
+                spine1.AddForce(appliedVelocity * Mathf.Max(0f, Vector3.Dot(spine1.transform.forward, flatTargetForward)), ForceMode.VelocityChange);
             }
+
+            avgSpeed = Mathf.Lerp(avgSpeed, spine1.velocity.magnitude, 0.1f);
+
+            animator.speed = Mathf.Min(0.5f + avgSpeed * 0.5f, 2f);
+        }
+
+        private bool initialInputReceived = false;
+        private Vector3 GetInputVector() {
+
+            Camera mainCamera = Camera.main;
+            Vector3 inputVector =
+                mainCamera.transform.right * Input.GetAxisRaw("Horizontal") +
+                mainCamera.transform.forward * Input.GetAxisRaw("Vertical");
+            inputVector.y = 0f;
+            inputVector.Normalize();
+
+            if (!initialInputReceived && inputVector.magnitude > 0.1f) {
+                return Vector3.zero;
+            }
+            initialInputReceived = true;
+            return inputVector;
         }
 
         private static void AntiStuck(JointInfo jointInfo) {
@@ -157,8 +181,9 @@ namespace LD49 {
             }
         }
 
-        public void Fart() {
+        public void Fart(float strength) {
             SetRagdoll(true);
+            IsRagdollBecauseFart = true;
 
             const float explosionDistance = 5f;
             foreach (Rigidbody rb in FindObjectsOfType<Rigidbody>()) {
@@ -182,11 +207,12 @@ namespace LD49 {
                 }
             }
 
-            Vector3 force = 
-                Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), spine1.transform.forward) * 
-                Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) * 
-                (spine1.transform.forward + Vector3.up * 2f) * 
-                Random.Range(minFartForce, maxFartForce);
+            Vector3 fartDirection =
+                Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), spine1.transform.forward) *
+                Quaternion.AngleAxis(Random.Range(-65.0f, 65.0f), Vector3.up) *
+                Vector3.up * 20f;
+
+            Vector3 force = fartDirection.normalized * strength;
 
             if (farticleSystem != null) {
                 farticleSystem.transform.rotation = Quaternion.FromToRotation(Vector3.forward, -force);
@@ -218,14 +244,21 @@ namespace LD49 {
             }
 
             // Give a small push when standing up
-            if (isRagdoll && !ragdollEnabled) {
+            if (IsRagdoll && !ragdollEnabled) {
+                IsRagdollBecauseFart = false;
                 Vector3 standingForce = Vector3.up * 100f;
-                foreach (var rb in rigidbodies) {
-                    rb.AddForce(standingForce / rigidbodies.Length, ForceMode.Impulse);
-                }
+                AddImpulseToBody(standingForce);
+            } else {
+                ragdollStartTime = Time.time;
             }
 
-            isRagdoll = ragdollEnabled;
+            IsRagdoll = ragdollEnabled;
+        }
+
+        public void AddImpulseToBody(Vector3 standingForce) {
+            foreach (var rb in rigidbodies) {
+                rb.AddForce(standingForce / rigidbodies.Length, ForceMode.Impulse);
+            }
         }
     }
 }

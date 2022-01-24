@@ -13,6 +13,10 @@ namespace LD49 {
                 if (player != null) {
                     target = player.spineRigidbody.transform;
                 }
+                ActivePlayer activePlayer = FindObjectOfType<ActivePlayer>();
+                if (activePlayer != null) {
+                    target = activePlayer.spine1.transform;
+                }
             }
         }
 

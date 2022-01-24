@@ -80,6 +80,7 @@ namespace LD49 {
             if (_instance != null) {
                 _instance.clenchBar.transform.localScale = new Vector3(clenchValue, 1.0f, 1.0f);
                 _instance.clenchBar.color = _instance.clenchGradient.Evaluate(clenchValue);
+                ToggleClenchBar(clenchValue > 0f);
             }
         }
 

@@ -22,7 +22,7 @@ namespace LD49 {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if (other.TryGetComponent(out Player player) && !ChaosManager.IsDead) {
+            if (other.TryGetComponent(out PlayerSpine spine) && !ChaosManager.IsDead) {
                 PlayerEnter?.Invoke();
                 playerEnterUnityEvent?.Invoke();
             }
