@@ -12,10 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e359ecf87c60f646816fccdb0965d49, type: 3}
   m_Name: LevelHolder
   m_EditorClassIdentifier: 
-  levelPrefabs:
-  - {fileID: 6977042419820616231, guid: 8b16cdb781558f94f8bac1a55c43b8b1, type: 3}
-  - {fileID: 6642709802082854837, guid: 65f0ae1042fcae749a3ea2236bbf7e6c, type: 3}
-  - {fileID: 1500813477775007891, guid: aea970a6e50e73842b1a7d98f2a5c1ff, type: 3}
-  - {fileID: 3467150191826417400, guid: e282c8e7b847e04439504d6e92524361, type: 3}
-  - {fileID: 6920771678728256520, guid: c45b2020882eea64ba278aa4f8620cff, type: 3}
-  - {fileID: 3467150191826417400, guid: ded19b3db2951f74ba17ffea93dc75ca, type: 3}
+  levels:
+  - m_SceneAsset: {fileID: 102900000, guid: 8220af363b4a4a44483d23650a7cf625, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Tutorial1.unity
+  - m_SceneAsset: {fileID: 102900000, guid: 1431d3059a45dad41b78343c07d10916, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Tutorial2.unity
+  - m_SceneAsset: {fileID: 102900000, guid: fae9bd33fe4d25046b4cc70350ee1450, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Level1.unity
+  - m_SceneAsset: {fileID: 102900000, guid: 6b455902ba892c14390fb6ad56521e8d, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Level2.unity
+  - m_SceneAsset: {fileID: 102900000, guid: 7c0ee35101ce6b4408c55fa5db91d5af, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Level3.unity
+  - m_SceneAsset: {fileID: 102900000, guid: 282bd599d64f3414c84247c93277a6bd, type: 3}
+    m_IsDirty: 0
+    m_ScenePath: Assets/Scenes/Levels/Level4.unity

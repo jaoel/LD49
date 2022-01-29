@@ -11,84 +11,102 @@ namespace LD49 {
         [SerializeField]
         private LevelHolder levelHolder = null;
 
-        private Level currentLevel = null;
-        private int currentLevelIndex = -1;
+        private GameScene currentLevelScene = null;
+        private int currentLevelSceneIndex = -1;
 
         private void Awake() {
-            _instance = this;
+            if (_instance == null) {
+                _instance = this;
+            } else {
+                // We delete 'gameObject' here, and not 'this', because GameManager should be the root object
+                // and container for multiple other managers
+                Destroy(gameObject);
+                Debug.LogWarning("A duplicate LevelManager was found and destroyed");
+            }
         }
 
         private void Start() {
-            currentLevel = FindObjectOfType<Level>();
+            currentLevelScene = levelHolder.GetLoadedLevelScene(out currentLevelSceneIndex);
             MusicManager.PlayGameMusic();
         }
 
-        private bool TryGetLevelPrefab(int levelID, out Level levelPrefab) {
-            if (levelID < 0 || levelID >= levelHolder.levelPrefabs.Count) {
-                Debug.LogError($"There is no level with index {levelID}");
-                levelPrefab = null;
-                return false;
+        public static bool LoadLevel(string levelScenePath) {
+            if (_instance && _instance.levelHolder.TryGetLevel(levelScenePath, out GameScene levelScene, out int levelSceneIndex)) {
+                return _instance.TransitionToLevel(levelScene, levelSceneIndex);
             }
-
-            levelPrefab = levelHolder.levelPrefabs[levelID];
-            if (levelPrefab == null) {
-                Debug.LogError($"Level with index {levelID} is null");
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
-        public static void LoadLevel(int levelID) {
-            if (_instance && _instance.TryGetLevelPrefab(levelID, out Level levelPrefab)) {
-                _instance.LoadLevel(levelPrefab, levelID);
+        public static bool LoadLevel(int levelSceneIndex) {
+            if (_instance && _instance.levelHolder.TryGetLevel(levelSceneIndex, out GameScene levelScene)) {
+                return _instance.TransitionToLevel(levelScene, levelSceneIndex);
             }
+            return false;
         }
 
         public static void LoadNextLevel(Action onComplete = null) {
             if (_instance != null) {
-                int nextLevelIndex = _instance.currentLevelIndex + 1;
-                if (nextLevelIndex >= _instance.levelHolder.levelPrefabs.Count) {
-                    GameManager.LoadEnd();
-                } else if (_instance.TryGetLevelPrefab(nextLevelIndex, out Level levelPrefab)) {
-                    GameManager.playerInputAllowed = false;
-                    OverlayManager.QueueFadeTransition(
-                        () => _instance.LoadLevel(levelPrefab, nextLevelIndex),
-                        () => {
-                            onComplete?.Invoke();
-                            GameManager.playerInputAllowed = true;
-                        });
+                int nextLevelIndex = _instance.currentLevelSceneIndex + 1;
+                if (nextLevelIndex >= _instance.levelHolder.levels.Count) {
+                    GameManager.TransitionToScene(Scenes.End);
+                } else if (_instance.levelHolder.TryGetLevel(nextLevelIndex, out GameScene nextLevelScene)) {
+                    _instance.TransitionToLevel(nextLevelScene, nextLevelIndex, onComplete);
                 }
             }
         }
 
         public static void ReloadCurrentLevel(Action onComplete = null) {
-            if (_instance != null) {
+            if (_instance != null && _instance.currentLevelScene != null) {
+                _instance.TransitionToLevel(_instance.currentLevelScene, _instance.currentLevelSceneIndex, onComplete);
+            }
+        }
+
+        private bool TransitionToLevel(GameScene levelScene, int levelSceneIndex, Action onComplete = null) {
+            if (levelScene != null) {
                 GameManager.playerInputAllowed = false;
                 OverlayManager.QueueFadeTransition(
-                    () => LoadLevel(_instance.currentLevelIndex),
+                    () => LoadLevelImmediate(levelScene, levelSceneIndex),
                     () => {
                         onComplete?.Invoke();
                         GameManager.playerInputAllowed = true;
                     });
+                return true;
+            }
+            return false;
+        }
+
+        private void UnloadCurrentLevel() {
+            if (currentLevelScene != null) {
+                DOTween.KillAll();
+                currentLevelScene.Unload();
+                currentLevelScene = null;
             }
         }
 
-        private void LoadLevel(Level levelPrefab, int levelID) {
-            if (currentLevel != null) {
-                DOTween.KillAll();
-                Destroy(currentLevel.gameObject);
+        private void UnloadMainMenu() {
+            if (Scenes.MainMenu.IsLoaded()) {
+                Scenes.MainMenu.Unload();
             }
+        }
 
-            Debug.Log($"Loading '{levelPrefab.name}' with id {levelID}");
-            currentLevel = Instantiate(levelPrefab);
-            currentLevelIndex = levelID;
-            GameManager.ResetChaos();
+        private void LoadLevelImmediate(GameScene levelScene, int levelSceneIndex) {
+            UnloadCurrentLevel();
+
+            Debug.Log($"Loading level '{levelScene.fullPathWithExtension}'");
+            var asyncLoadOp = levelScene.LoadAsync(LoadSceneMode.Additive);
+            asyncLoadOp.completed += op => {
+                levelScene.MakeActiveScene();
+                currentLevelScene = levelScene;
+                currentLevelSceneIndex = levelSceneIndex;
+                GameManager.ResetChaos();
+
+                UnloadMainMenu();
+            };
         }
 
         public static void RecordCurrentLevelWin() {
-            if (_instance != null && _instance.currentLevel != null) {
-                PlayerPrefs.SetInt($"level{_instance.currentLevelIndex}", 1);
+            if (_instance != null && _instance.currentLevelScene != null) {
+                PlayerPrefs.SetInt($"level{_instance.currentLevelScene.fullPathWithExtension}", 1);
             }
         }
     }

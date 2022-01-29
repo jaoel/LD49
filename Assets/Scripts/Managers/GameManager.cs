@@ -8,11 +8,6 @@ using System.Collections;
 
 namespace LD49 {
     public class GameManager : MonoBehaviour {
-        public class SceneNames {
-            public static readonly string GameScene = "MainScene";
-            public static readonly string MainMenu = "Bootstrap";
-            public static readonly string EndScene = "EndScene";
-        };
 
         private static GameManager _instance;
         private Coroutine respawnCoroutine = null;
@@ -20,8 +15,6 @@ namespace LD49 {
         public FarticleSystem activeFarticleSystemPrefab;
 
         public static FarticleSystem ActiveFarticleSystemPrefab => _instance == null ? null : _instance.activeFarticleSystemPrefab;
-
-        public static bool IsGameScene => SceneManager.GetActiveScene().name == SceneNames.GameScene;
 
         // TODO: Add input manager
         public static bool playerInputAllowed = true;
@@ -43,9 +36,9 @@ namespace LD49 {
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                if (SceneManager.GetActiveScene().name != SceneNames.MainMenu) {
+                if (!Scenes.MainMenu.IsLoaded()) {
                     OverlayManager.ClearQueue();
-                    LoadMainMenu();
+                    TransitionToScene(Scenes.MainMenu);
                 }
             }
 
@@ -86,38 +79,15 @@ namespace LD49 {
             }
         }
 
-        public static void LoadGameAtLevel(int levelID) {
-            if (_instance != null) {
-                OverlayManager.QueueFadeTransition(() => {
-                    if (!IsGameScene) {
-                        DOTween.KillAll();
-                        AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(SceneNames.GameScene);
-                        sceneLoadOperation.completed += ao => LevelManager.LoadLevel(levelID);
-                    } else {
-                        LevelManager.LoadLevel(levelID);
-                    }
-                },
-                () => playerInputAllowed = true);
-            }
+        public static bool LoadGameAtLevel(int levelSceneIndex) {
+            return LevelManager.LoadLevel(levelSceneIndex);
         }
 
-        private void LoadScene(string sceneName, Action onComplete) {
+        public static void TransitionToScene(GameScene scene, Action onComplete = null) {
             OverlayManager.QueueFadeTransition(() => {
                 DOTween.KillAll();
-                SceneManager.LoadScene(sceneName);
+                scene.Load();
             }, onComplete);
-        }
-
-        public static void LoadMainMenu(Action onComplete = null) {
-            if (_instance != null) {
-                _instance.LoadScene(SceneNames.MainMenu, onComplete);
-            }
-        }
-
-        public static void LoadEnd(Action onComplete = null) {
-            if (_instance != null) {
-                _instance.LoadScene(SceneNames.EndScene, onComplete);
-            }
         }
     }
 }

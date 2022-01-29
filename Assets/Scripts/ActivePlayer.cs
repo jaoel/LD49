@@ -156,9 +156,9 @@ namespace LD49 {
         private Vector3 GetInputVector() {
 
             Camera mainCamera = Camera.main;
-            Vector3 inputVector =
-                mainCamera.transform.right * Input.GetAxisRaw("Horizontal") +
-                mainCamera.transform.forward * Input.GetAxisRaw("Vertical");
+            Vector3 forward = mainCamera != null ? mainCamera.transform.forward : Vector3.forward;
+            Vector3 right = mainCamera != null ? mainCamera.transform.right : Vector3.right;
+            Vector3 inputVector = right * Input.GetAxisRaw("Horizontal") + forward * Input.GetAxisRaw("Vertical");
             inputVector.y = 0f;
             inputVector.Normalize();
 

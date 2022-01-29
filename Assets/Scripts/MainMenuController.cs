@@ -35,7 +35,7 @@ namespace LD49 {
 
                 int i = 1;
                 foreach (Transform button in levelSelectButtons.transform) {
-                    if (levelHolder.levelPrefabs.Count < i) {
+                    if (levelHolder.levels.Count < i) {
                         button.gameObject.SetActive(false);
                     } else {
                         button.gameObject.SetActive(true);
@@ -54,8 +54,7 @@ namespace LD49 {
 
         public void StartLevel(int levelID) {
             if (!loading) {
-                loading = true;
-                GameManager.LoadGameAtLevel(levelID);
+                loading = GameManager.LoadGameAtLevel(levelID);
             }
         }
 

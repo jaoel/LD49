@@ -46,6 +46,7 @@ namespace LD49 {
                 Destroy(this);
                 Debug.LogWarning("A duplicate UIManager was found");
             }
+            UpdateChaos(0f);
         }
 
         private void Update() {
