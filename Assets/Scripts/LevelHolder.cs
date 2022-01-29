@@ -5,12 +5,18 @@ using UnityEngine;
 namespace LD49 {
     [CreateAssetMenu(fileName = "Level Holder", menuName = "LD49/Create Level Holder")]
     public class LevelHolder : ScriptableObject {
-        public List<SceneReference> levels = new List<SceneReference>();
+        [System.Serializable]
+        public class LevelEntry {
+            public SceneReference scene;
+            public FMODUnity.EventReference musicEvent;
+        }
+
+        public List<LevelEntry> levels = new List<LevelEntry>();
 
         public bool TryGetLevel(int levelIndex, out GameScene levelScene) {
             if (levelIndex >= 0 && levelIndex < levels.Count) {
                 levelScene = new GameScene() {
-                    fullPathWithExtension = levels[levelIndex].ScenePath,
+                    fullPathWithExtension = levels[levelIndex].scene.ScenePath,
                 };
                 return true;
             }
@@ -21,7 +27,7 @@ namespace LD49 {
 
         public bool TryGetLevel(string levelScenePath, out GameScene levelScene, out int index) {
             for (int i = 0; i < levels.Count; i++) {
-                SceneReference level = levels[i];
+                SceneReference level = levels[i].scene;
                 if (level.ScenePath == levelScenePath) {
                     levelScene = new GameScene() {
                         fullPathWithExtension = level.ScenePath,
@@ -40,7 +46,7 @@ namespace LD49 {
 
         public GameScene GetLoadedLevelScene(out int index) {
             for (int i = 0; i < levels.Count; i++) {
-                SceneReference level = levels[i];
+                SceneReference level = levels[i].scene;
                 var levelScene = new GameScene() { fullPathWithExtension = level.ScenePath };
                 if (levelScene.IsLoaded()) {
                     index = i;
@@ -52,14 +58,11 @@ namespace LD49 {
             return null;
         }
 
-        private void OnValidate() {
-            HashSet<string> nameEntries = new HashSet<string>();
-            foreach (var level in levels) {
-                if (nameEntries.Contains(level.ScenePath)) {
-                    Debug.LogError($"Duplicate level found in {name}: '{level.ScenePath}'");
-                }
-                nameEntries.Add(level.ScenePath);
+        public FMODUnity.EventReference GetMusicEvent(int levelIndex) {
+            if (levelIndex >= 0 && levelIndex < levels.Count) {
+                return levels[levelIndex].musicEvent;
             }
+            return new FMODUnity.EventReference();
         }
     }
 }

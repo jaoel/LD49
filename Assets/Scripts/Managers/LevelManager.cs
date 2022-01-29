@@ -27,7 +27,6 @@ namespace LD49 {
 
         private void Start() {
             currentLevelScene = levelHolder.GetLoadedLevelScene(out currentLevelSceneIndex);
-            MusicManager.PlayGameMusic();
         }
 
         public static bool LoadLevel(string levelScenePath) {
@@ -62,6 +61,14 @@ namespace LD49 {
         }
 
         private bool TransitionToLevel(GameScene levelScene, int levelSceneIndex, Action onComplete = null) {
+            // TODO: Fade music if different
+            FMODUnity.EventReference musicEvent = levelHolder.GetMusicEvent(levelSceneIndex);
+            if (!musicEvent.IsNull) {
+                MusicManager.PlayMusic(musicEvent);
+            } else {
+                MusicManager.PlayGameMusic();
+            }
+
             if (levelScene != null) {
                 GameManager.playerInputAllowed = false;
                 OverlayManager.QueueFadeTransition(

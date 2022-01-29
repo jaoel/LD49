@@ -66,6 +66,12 @@ namespace LD49 {
             }
         }
 
+        public static void PlayMusic(FMODUnity.EventReference eventRef) {
+            if (_instance != null && !eventRef.IsNull) {
+                _instance.QueueMusic(eventRef.Path);
+            }
+        }
+
         public static void PlayMainMenuMusic() {
             if (_instance != null) {
                 PlayMusic("event:/Music/MainMenuTheme");
