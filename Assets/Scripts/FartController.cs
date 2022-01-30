@@ -73,7 +73,7 @@ namespace LD49 {
 
             if (isClenching) {
                 // Unclenching will always result in a fart regardless if we're already farting or not
-                if (Input.GetKeyUp(KeyCode.Space) || Time.time >= (clenchTimerStart + clenchDuration) || player.IsRagdoll) {
+                if (Input.GetKeyUp(KeyCode.Space) || Time.time >= (clenchTimerStart + clenchDuration)) {
                     isClenching = false;
                     isGoingToFart = true;
                     fartTimerStart = Time.time - fartDuration;
