@@ -3,10 +3,12 @@ using FMOD.Studio;
 
 namespace LD49 {
     public class MusicManager : MonoBehaviour {
+        public FMODUnity.EventReference mainMenuTheme;
+        public FMODUnity.EventReference defaultLevelTheme;
+
         private static MusicManager _instance;
-        private FMOD.Studio.EventInstance musicInstance;
-        private string currentEvent;
-        private string queuedEvent;
+        private FMODUnity.EventReference currentEvent;
+        private FMODUnity.EventReference queuedEvent;
         private EventInstance eventInstance;
 
         private void Awake() {
@@ -22,17 +24,17 @@ namespace LD49 {
             SetMusicVolume(0.25f);
         }
 
-        private void QueueMusic(string fmodEvent) {
-            if (currentEvent != fmodEvent) {
+        private void QueueMusic(FMODUnity.EventReference fmodEvent) {
+            if (!fmodEvent.IsNull && currentEvent.Guid != fmodEvent.Guid) {
                 queuedEvent = fmodEvent;
             }
         }
 
         private void Update() {
-            if (!string.IsNullOrEmpty(queuedEvent) && queuedEvent != currentEvent) {
+            if (!queuedEvent.IsNull && queuedEvent.Guid != currentEvent.Guid) {
                 if (!eventInstance.hasHandle()) {
                     currentEvent = queuedEvent;
-                    queuedEvent = null;
+                    queuedEvent = new FMODUnity.EventReference();
 
                     eventInstance = FMODUnity.RuntimeManager.CreateInstance(currentEvent);
                     eventInstance.setVolume(1f);
@@ -45,7 +47,7 @@ namespace LD49 {
 
                     if (volume <= 0f) {
                         currentEvent = queuedEvent;
-                        queuedEvent = null;
+                        queuedEvent = new FMODUnity.EventReference();
 
                         eventInstance.release();
 
@@ -72,27 +74,21 @@ namespace LD49 {
             musicBus.setVolume(volume);
         }
 
-        public static void PlayMusic(string fmodEvent) {
-            if (_instance != null && !string.IsNullOrEmpty(fmodEvent)) {
-                _instance.QueueMusic(fmodEvent);
-            }
-        }
-
         public static void PlayMusic(FMODUnity.EventReference eventRef) {
             if (_instance != null && !eventRef.IsNull) {
-                _instance.QueueMusic(eventRef.Path);
+                _instance.QueueMusic(eventRef);
             }
         }
 
         public static void PlayMainMenuMusic() {
             if (_instance != null) {
-                PlayMusic("event:/Music/MainMenuTheme");
+                PlayMusic(_instance.mainMenuTheme);
             }
         }
 
         public static void PlayGameMusic() {
             if (_instance != null) {
-                PlayMusic("event:/Music/LevelTheme");
+                PlayMusic(_instance.defaultLevelTheme);
             }
         }
     }

@@ -276,6 +276,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcff3b562668e3e43993ca012295cb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuTheme:
+    Guid:
+      Data1: -1786890761
+      Data2: 1179212862
+      Data3: 1730595982
+      Data4: -765867789
+    Path: event:/Music/MainMenuTheme
+  defaultLevelTheme:
+    Guid:
+      Data1: 1004581295
+      Data2: 1125307106
+      Data3: 1019226033
+      Data4: 557537060
+    Path: event:/Music/LevelTheme
 --- !u!1 &6872784033853840808
 GameObject:
   m_ObjectHideFlags: 0
