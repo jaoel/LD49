@@ -60,14 +60,29 @@ namespace LD49 {
             }
         }
 
-        private bool TransitionToLevel(GameScene levelScene, int levelSceneIndex, Action onComplete = null) {
-            // TODO: Fade music if different
-            FMODUnity.EventReference musicEvent = levelHolder.GetMusicEvent(levelSceneIndex);
-            if (!musicEvent.IsNull) {
-                MusicManager.PlayMusic(musicEvent);
-            } else {
-                MusicManager.PlayGameMusic();
+        public static void RestartCurrentLevelMusic() {
+            if (_instance != null && _instance.currentLevelScene != null) {
+                _instance.levelHolder.GetLoadedLevelScene(out int loadedLevelIndex);
+                if (loadedLevelIndex != -1) {
+                    PlayLevelMusic(loadedLevelIndex);
+                }
             }
+        }
+
+        public static void PlayLevelMusic(int levelSceneIndex) {
+            if (_instance != null && _instance.currentLevelScene != null) {
+                // TODO: Fade music if different
+                FMODUnity.EventReference musicEvent = _instance.levelHolder.GetMusicEvent(levelSceneIndex);
+                if (!musicEvent.IsNull) {
+                    MusicManager.PlayMusic(musicEvent);
+                } else {
+                    MusicManager.PlayGameMusic();
+                }
+            }
+        }
+
+        private bool TransitionToLevel(GameScene levelScene, int levelSceneIndex, Action onComplete = null) {
+            PlayLevelMusic(levelSceneIndex);
 
             if (levelScene != null) {
                 GameManager.playerInputAllowed = false;
