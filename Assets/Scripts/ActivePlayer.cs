@@ -191,7 +191,10 @@ namespace LD49 {
                 if (!rigidbodies.Contains(rb) && !rb.isKinematic) {
                     float distance = Vector3.Distance(rb.position, farticleSystemHolder.position);
                     if (distance < explosionDistance) {
-                        rb.AddExplosionForce(1000f + 1000f * clenchAmount, farticleSystemHolder.position - Vector3.up, explosionDistance);
+                        Vector3 vectorToObject = rb.position - farticleSystemHolder.position;
+                        float invDistance = Mathf.Max(1f, vectorToObject.magnitude);
+                        float fartStrengthFinal = (25f + 25f * clenchAmount) * strength;
+                        rb.AddForce(fartStrengthFinal * vectorToObject.normalized / invDistance + Vector3.up * rb.mass * 2.5f);
                         if (rb.TryGetComponent(out Prop prop)) {
                             prop.AddChaos(0.25f / (1f + distance / explosionDistance));
                         }
