@@ -18,6 +18,10 @@ namespace LD49 {
             }
         }
 
+        private void Start() {
+            SetMusicVolume(0.25f);
+        }
+
         private void QueueMusic(string fmodEvent) {
             if (currentEvent != fmodEvent) {
                 queuedEvent = fmodEvent;
@@ -58,6 +62,14 @@ namespace LD49 {
                     eventInstance.setVolume(volume);
                 }
             }
+        }
+
+        public static void SetMusicVolume(float volume) {
+            volume = Mathf.Clamp01(volume);
+
+            // TODO: Set value in settings and save.
+            Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
+            musicBus.setVolume(volume);
         }
 
         public static void PlayMusic(string fmodEvent) {
