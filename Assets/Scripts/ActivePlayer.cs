@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace LD49 {
     public class ActivePlayer : MonoBehaviour {
+        public enum MovementState {
+            Ground,
+            Weightless,
+        }
+
         class JointInfo {
             public Transform source;
             public ConfigurableJoint joint;
@@ -39,6 +44,7 @@ namespace LD49 {
         private FarticleSystem farticleSystem;
         private float clenchAmount = 0f;
 
+        private MovementState movementState = MovementState.Ground;
 
         [SerializeField, Tooltip("The amount of time in seconds while ragdolling (and stationary) until ragdolling can stop.")]
         private float ragdollDuration = 1f;
@@ -48,6 +54,7 @@ namespace LD49 {
         public bool IsRagdollBecauseFart { get; private set; } = false;
         public bool HasMovedSinceSpawn { get; private set; } = false;
         public bool IsStationary => avgSpeed <= 0.2f;
+        public bool IsInSpace { get; set; } = false;
 
         private void Awake() {
             rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -107,49 +114,125 @@ namespace LD49 {
             if (IsRagdoll && Time.time >= ragdollStartTime + ragdollDuration && IsStationary && !ChaosManager.IsDead) {
                 SetRagdoll(false);
             }
+
+            if (IsInSpace) {
+                SetMovementState(MovementState.Weightless);
+            } else {
+                SetMovementState(MovementState.Ground);
+            }
         }
 
         private void FixedUpdate() {
             if (!IsRagdoll) {
-                foreach (var jointInfo in jointInfos) {
-                    AntiStuck(jointInfo);
-                    jointInfo.joint.SetTargetRotationLocal(jointInfo.source.localRotation, jointInfo.initialRotation);
+                ApplyActiveRagdoll();
+
+                switch (movementState) {
+                    case MovementState.Ground:
+                        UpdateGroundMovement();
+                        break;
+                    case MovementState.Weightless:
+                        UpdateWeightlessMovement();
+                        break;
                 }
-
-                // localUp is used to tilt the character back a little when idle, and forward when running
-                // it's to compensate for the rest pose of the spine bones being a little bit tilted.
-                Vector3 localUp = new Vector3(0f, 1f, (1f - runSpeed) * 0.15f).normalized;
-                spine1.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
-                spine2.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
-
-                Vector3 flatForward = spine1.transform.forward;
-                flatForward.y = 0f;
-                flatForward.Normalize();
-
-                Vector3 flatTargetForward = targetForward;
-                flatTargetForward.y = 0f;
-                flatTargetForward.Normalize();
-
-                Vector3 torqueToApply = Vector3.Cross(flatForward, flatTargetForward);
-
-                // Apply more torque if the current angular velocity is in the opposite direction of where we want to turn
-                // to avoid the spring effect
-                float torqueDirection = Vector3.Dot(spine1.angularVelocity, torqueToApply);
-                if (torqueDirection < 0f) {
-                    torqueToApply *= Mathf.Abs(torqueDirection) * 2.5f;
-                }
-
-                spine1.AddTorque(torqueToApply * forwardTorque);
-
-                Vector3 targetVelocity = flatTargetForward * forwardSpeed * runSpeed;
-                Vector3 appliedVelocity = targetVelocity - spine1.velocity;
-
-                spine1.AddForce(appliedVelocity * Mathf.Max(0f, Vector3.Dot(spine1.transform.forward, flatTargetForward)), ForceMode.VelocityChange);
             }
 
             avgSpeed = Mathf.Lerp(avgSpeed, spine1.velocity.magnitude, 0.1f);
+        }
 
+        private void ApplyActiveRagdoll() {
+            foreach (var jointInfo in jointInfos) {
+                AntiStuck(jointInfo);
+                jointInfo.joint.SetTargetRotationLocal(jointInfo.source.localRotation, jointInfo.initialRotation);
+            }
+
+            // localUp is used to tilt the character back a little when idle, and forward when running
+            // it's to compensate for the rest pose of the spine bones being a little bit tilted.
+            Vector3 localUp = new Vector3(0f, 1f, (1f - runSpeed) * 0.15f).normalized;
+            spine1.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
+            spine2.AddRelativeTorque(Vector3.Cross(localUp, spine1.transform.InverseTransformDirection(Vector3.up)) * uprightTorque, ForceMode.VelocityChange);
+        }
+
+        private void SetMovementState(MovementState nextState) {
+            if (movementState != nextState) {
+                switch (nextState) {
+                    case MovementState.Ground:
+                        EnterGroundMovementState();
+                        break;
+                    case MovementState.Weightless:
+                        EnterWeightlessMovementState();
+                        break;
+                }
+
+                movementState = nextState;
+            }
+        }
+
+        private void EnterGroundMovementState() {
+            SetRagdoll(false);
+            foreach (var rb in rigidbodies) {
+                rb.useGravity = true;
+            }
+        }
+
+        private void UpdateGroundMovement() {
+            Vector3 flatForward = spine1.transform.forward;
+            flatForward.y = 0f;
+            flatForward.Normalize();
+
+            Vector3 flatTargetForward = targetForward;
+            flatTargetForward.y = 0f;
+            flatTargetForward.Normalize();
+
+            Vector3 torqueToApply = Vector3.Cross(flatForward, flatTargetForward);
+
+            // Apply more torque if the current angular velocity is in the opposite direction of where we want to turn
+            // to avoid the spring effect
+            float torqueDirection = Vector3.Dot(spine1.angularVelocity, torqueToApply);
+            if (torqueDirection < 0f) {
+                torqueToApply *= Mathf.Abs(torqueDirection) * 2.5f;
+            }
+
+            spine1.AddTorque(torqueToApply * forwardTorque);
+
+            Vector3 targetVelocity = flatTargetForward * forwardSpeed * runSpeed;
+            Vector3 appliedVelocity = targetVelocity - spine1.velocity;
+
+            spine1.AddForce(appliedVelocity * Mathf.Max(0f, Vector3.Dot(spine1.transform.forward, flatTargetForward)), ForceMode.VelocityChange);
             animator.speed = Mathf.Min(0.5f + avgSpeed * 0.5f, 2f);
+        }
+
+        private void EnterWeightlessMovementState() {
+            SetRagdoll(true);
+            foreach (var rb in rigidbodies) {
+                rb.useGravity = false;
+            }
+        }
+
+        private void UpdateWeightlessMovement() {
+            //Vector3 flatForward = spine1.transform.forward;
+            //flatForward.y = 0f;
+            //flatForward.Normalize();
+
+            //Vector3 flatTargetForward = targetForward;
+            //flatTargetForward.y = 0f;
+            //flatTargetForward.Normalize();
+
+            //Vector3 torqueToApply = Vector3.Cross(flatForward, flatTargetForward);
+
+            //// Apply more torque if the current angular velocity is in the opposite direction of where we want to turn
+            //// to avoid the spring effect
+            //float torqueDirection = Vector3.Dot(spine1.angularVelocity, torqueToApply);
+            //if (torqueDirection < 0f) {
+            //    torqueToApply *= Mathf.Abs(torqueDirection) * 2.5f;
+            //}
+
+            //spine1.AddTorque(torqueToApply * forwardTorque);
+
+            //Vector3 targetVelocity = flatTargetForward * forwardSpeed * runSpeed;
+            //Vector3 appliedVelocity = targetVelocity - spine1.velocity;
+
+            //spine1.AddForce(appliedVelocity * Mathf.Max(0f, Vector3.Dot(spine1.transform.forward, flatTargetForward)), ForceMode.VelocityChange);
+            //animator.speed = Mathf.Min(0.5f + avgSpeed * 0.5f, 2f);
         }
 
         private bool initialInputReceived = false;
